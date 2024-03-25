@@ -1,0 +1,47 @@
+.login {
+    width: 400px;
+    background: #fff;
+    border: 1px solid #232424;
+    box-shadow: 0 2px 4px rgb(0 0 10 / 64%), 0 8px 16px rgb(0 10 0 / 34%);
+    border-radius: 8px;
+    padding: 1rem;
+    align-items: center;
+    text-align: center;
+ 
+}
+.capcha {
+   margin-left: 30px;
+   
+}
+.login > form input {
+    border-radius: 20px;
+    border: 2px solid rgb(41, 40, 40);
+    outline: none;
+    color: #1d2129;
+    margin: 4px 0;
+    width: 90%;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.Login-Main {
+    display: flex;
+   margin-top: -30px;
+    width: 100vw;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .password-input {
+        position: relative;
+      }
+      
+      .password-toggle-icon {
+        position: absolute;
+        top: 50%;
+        right: 30px; /* Adjust as needed */
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      

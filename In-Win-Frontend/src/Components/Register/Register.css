@@ -1,0 +1,49 @@
+.register {
+    width: 400px;
+    background: #fff;
+    border: 1px solid #232424;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    padding: 1rem;
+    align-items: center;
+    text-align: center;
+}
+.otp-modal {
+    width: 400px;
+    background: #fff;
+    border: 1px solid #232424;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    padding: 1rem;
+    align-items: center;
+    text-align: center;
+}
+
+.register > form input {
+    border-radius: 20px;
+    border: 2px solid rgb(69, 67, 67);
+    outline: none;
+    color: #1d2129;
+    margin: 4px 0;
+    width: 90%;
+    padding: 8px;
+    font-size: 16px;
+}
+.otp-input{
+    border-radius: 20px;
+    border: 2px solid rgb(69, 67, 67);
+    outline: none;
+    color: #1d2129;
+    margin: 2% 0;
+    width: 90%;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.Register-Main {
+    display: flex;
+    width: 100vw;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    }

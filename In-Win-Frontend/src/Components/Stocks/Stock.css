@@ -1,0 +1,13 @@
+.card {
+    transition: transform 0.3s ease;
+    transform-origin: center;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card:not(:hover) {
+    transform: scale(1);
+  }
+  
