@@ -42,23 +42,7 @@ public class UserController {
 	private final Map<String, User> userMap = new HashMap<>();
    
 
-	@GetMapping("/loginoauth")
-	public ResponseEntity<Object> loginOauth(HttpServletRequest request, HttpServletResponse response) {
-	    HttpSession session = request.getSession();
-	    User userEntity = (User) session.getAttribute("userEntity");
-	    System.out.println("UserEntity in controller: " + userEntity);
-
-	    // Encode the username
-	    String encodedUsername = URLEncoder.encode(userEntity.getUserName(), StandardCharsets.UTF_8);
-
-	    // Redirect to the URL and include the encoded username as a query parameter
-	    String redirectUrl = "http://localhost:3000/userDashBoard?username=" + encodedUsername;
-
-	    System.out.println("Redirect URL: " + redirectUrl);
-	    return ResponseEntity.status(HttpStatus.FOUND)
-	            .location(URI.create(redirectUrl))
-	            .build();
-	}
+	
 
 
 	@GetMapping("/totalPFAmount/{userName}")
