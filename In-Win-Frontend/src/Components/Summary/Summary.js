@@ -3,7 +3,7 @@ import { BASE_URl } from "../API/Api";
 import { CurrencyState } from "../../CurrencyContext";
 import { useAsyncError, useLocation } from "react-router-dom";
 import "../Summary/Summary.css";
-import SummaryImage from "../../assets/Summary_1.jpg";
+import SummaryImage from "../../assets/summary_2.jpg";
 import { useScrollTrigger } from "@mui/material";
 function Summary() {
   const location = useLocation();
@@ -238,7 +238,7 @@ function Summary() {
   return (
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-md-5">
+        <div className="col-md-6">
           {/* <div className="table-responsive" >
             <h5 className='text-center'>Net Worth</h5>
             <table class="   table table-sm    " style={{textAlign:'center'}}  >
@@ -266,10 +266,10 @@ function Summary() {
             }}
           >
             <div className="card-body">
-              <h5 className="card-title text-center" style={{ color: "white" }}>
+              <h5 className="card-title text-center" style={{ color: "white" ,fontSize:"22px"}}>
                 Net Worth
               </h5>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Properties Current Value:
                 <strong>
                   {renderPrice(totalPropertyValue.toFixed(2))} {currency}
@@ -280,7 +280,7 @@ function Summary() {
         </div>
       </div>
       <div className="row mt-3" style={{ justifyContent: "center" }}>
-        <div className="col-md-4">
+        <div className="col-md-5">
           {/* <table class="    table  table-striped mt-3 "  style={{textAlign:"center"}}>
             <thead>
             </thead>
@@ -340,40 +340,40 @@ function Summary() {
             }}
           >
             <div className="card-body">
-              <h5 className="card-title text-center" style={{ color: "white" }}>
+              <h5 className="card-title text-center" style={{ color: "white" ,fontSize:"22px"}}>
                 Assets Current Value In {currency}
               </h5>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Stocks:
                 <strong>
                   {renderPrice(totalPrice && totalPrice.toFixed(2))} {currency}
                 </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
                 Metals:<strong>{renderPrice(metalPrices)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
                 Realestate:<strong>{renderPrice(realestatePrice)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Fixed Deposit:<strong>{renderPrice(fixedDeposit)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
                 Antique Pieces:<strong>{renderPrice(antiquePieces)}</strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Vehicles:<strong>{renderPrice(vehicles)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Insurance:<strong>{renderPrice(insurances)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center",fontSize:"22px"}}>
                 Loans:<strong>{renderPrice(loansPaid)}</strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
                 PF Amount:<strong>{renderPrice(pfAmount)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Total:
                 <strong>
                   {renderPrice(assets.toFixed(2))} {currency}
@@ -382,7 +382,7 @@ function Summary() {
             </div>
           </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           {/* <table class="    table  table-striped mt-3 "  style={{textAlign:"center"}}>
             <thead>
             </thead>
@@ -414,16 +414,16 @@ function Summary() {
             }}
           >
             <div className="card-body">
-              <h5 className="card-title text-center" style={{ color: "white" }}>
+              <h5 className="card-title text-center" style={{ color: "white" ,fontSize:"22px"}}>
                 Liabilities Current Value In {currency}
               </h5>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Insurance:<strong>{renderPrice(insurances)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center" ,fontSize:"22px"}}>
                 Loans:<strong>{renderPrice(loans)} </strong>
               </p>
-              <p style={{ color: "white", textAlign: "center" }}>
+              <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
                 Total:
                 <strong>
                   {renderPrice(liabilities.toFixed(2))} {currency}{" "}
@@ -441,19 +441,19 @@ function Summary() {
 
       <div className="container">
   <div className="row justify-content-center">
-    <div className="col-md-5 mt-5">
+    <div className="col-md-6 mt-5">
       <div className="card h-100" style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: "cover", justifyContent: "center" }}>
         <div className="card-body">
-          <h5 className="card-title text-center" style={{ color: "white" }}>Monthly Expenses {currency}</h5>
+          <h5 className="card-title text-center" style={{ color: "white",fontSize:"22px" }}>Monthly Expenses {currency}</h5>
           {userData && userData.ctc === undefined && (
-            <p style={{ color: "white", textAlign: "center" }}>
+            <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
               CTC:<strong>  {renderPrice(userData.ctc)} </strong>
             </p>
           )}
-          <p style={{ color: "white", textAlign: "center" }}>
+          <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
             Monthly Bills:<strong>{renderPrice(bills)} </strong>
           </p>
-          <p style={{ color: "white", textAlign: "center" }}>
+          <p style={{ color: "white", textAlign: "center",fontSize:"22px" }}>
             Total:<strong>{renderPrice(monthlyExpenses.toFixed(2))} {currency}</strong>
           </p>
         </div>

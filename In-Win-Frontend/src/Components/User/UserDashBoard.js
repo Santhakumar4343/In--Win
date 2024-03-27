@@ -112,7 +112,7 @@ const userData=location.state?.userData.userName;
       case "profile":
         return "Profile";
       case "monthlyExpenditure":
-        return "Monthly Expenditure";
+        return "Monthly Expenses ";
       default:
         return "";
     }
@@ -202,7 +202,7 @@ const userData=location.state?.userData.userName;
         </ul>
       </div>
       <div className="main-content" style={{ padding: "20px" }}>
-      <h4 className="text-center" style={{ fontWeight: 1000, fontFamily: "Segoe UI, sans-serif", color: "black" }}>
+      <h4 className="text-center" style={{ fontWeight: 1000, fontSize:"35px",fontFamily: "Segoe UI, sans-serif", color: "black" }}>
           {renderHeaderContent()}
         </h4>
 

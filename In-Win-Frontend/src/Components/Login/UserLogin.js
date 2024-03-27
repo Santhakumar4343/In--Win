@@ -118,7 +118,6 @@ const Login = ({ }) => {
               Login
             </button>
           </form>
-          <a href="http://localhost:8082">Login With Google</a>  <br></br>
           <NavLink to="/register">Not yet registered? Register Now</NavLink><br></br>
           <NavLink to="/forgot-password">Forgot Password </NavLink>
         </div>
