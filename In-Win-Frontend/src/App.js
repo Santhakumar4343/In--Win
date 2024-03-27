@@ -5,6 +5,7 @@ import Register from "./Components/Register/Register"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserDashBoard from './Components/User/UserDashBoard';
 import NomineeDashboard from './Components/Nominee/NomineeDashboard';
+import ForgotPassword from './Components/Profile/ForgotPassword';
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
             element={<Login />}
           ></Route>
           <Route path="/register" element={<Register />}></Route>
+          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
           <Route path="/userDashBoard" element={<UserDashBoard />}></Route>
           <Route path="/nomineeDashBoard" element={<NomineeDashboard />}></Route>
         </Routes>

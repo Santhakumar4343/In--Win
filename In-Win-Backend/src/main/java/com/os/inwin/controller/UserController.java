@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.os.inwin.entity.User;
+import com.os.inwin.repository.UserRepository;
 import com.os.inwin.serviceImpl.UserServiceImpl;
 
 import jakarta.security.auth.message.AuthException;
@@ -30,11 +31,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
+	@Autowired
+	private UserRepository userRepository;
 	private final Map<String, User> userMap = new HashMap<>();
    
 
@@ -181,10 +185,57 @@ public class UserController {
 		}
 	}
 
-	 @PutMapping("/update-password")
-	    public ResponseEntity<User> updatePassword(@RequestParam String email) {
-	        User updatedUser = new User();
-	        User user = userService.updatePassword(email, updatedUser);
-	        return user != null ? new ResponseEntity<>(user, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestParam String email) {
+        // Update password functionality, generate OTP and send email
+        String updatedEmail = userService.updatePassword(email);
+        if (updatedEmail != null) {
+            return new ResponseEntity<>("Password reset initiated. Check your email.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PostMapping("/verify-otp/forgotpassword")
+    public ResponseEntity<String> verifyOtpForForgotpassword(@RequestParam String otp, HttpSession session) {
+        // Check OTP for the provided email
+        String verifiedOtp = userService.verifyOtpForForgotPassword(otp);
+        if (verifiedOtp != null) {
+            // OTP verified successfully, store the email in the session
+            String email = userService.getEmailFromOTPVerification(verifiedOtp);
+            System.out.println(email);
+            session.setAttribute("verifiedEmail", email);
+            return new ResponseEntity<>("OTP verified successfully.", HttpStatus.OK);
+        } else {
+            // Invalid OTP provided
+            return new ResponseEntity<>("Invalid OTP", HttpStatus.BAD_REQUEST);
+        }
+    }
+   
+
+    @PostMapping("/set-new-password")
+    public ResponseEntity<String> setNewPasswordForEmail(@RequestParam String newPassword, HttpSession session) {
+        // Get the email from the session
+        String email = (String) session.getAttribute("verifiedEmail");
+        if (email != null) {
+            // Update password functionality
+            Optional<User> optionalUser = userRepository.findByEmail(email);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                // Set the new password for the user
+                user.setPassword(newPassword);
+                userRepository.save(user);
+                // Optionally, you can invalidate the session after updating the password
+                session.removeAttribute("verifiedEmail");
+                return new ResponseEntity<>("Password updated successfully.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>("Email not verified", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

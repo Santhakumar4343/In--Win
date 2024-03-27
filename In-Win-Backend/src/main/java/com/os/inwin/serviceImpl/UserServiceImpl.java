@@ -169,6 +169,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private final Map<String, String> otpCache = new ConcurrentHashMap<>();
+	private final Map<String, String> otpCacheforgot = new ConcurrentHashMap<>();
 
 	public String generateOtpAndSendEmail(User user) {
 		try {
@@ -188,6 +189,7 @@ public class UserServiceImpl implements UserService {
 			return null; // Handle the case where OTP generation fails
 		}
 	}
+	
 
 	public void sendOtpToSuperUser(User user) {
 		// Retrieve the SuperUser's email from your database or configuration
@@ -207,6 +209,7 @@ public class UserServiceImpl implements UserService {
 		message.setText("Hello " + username + ",\n\nThe requested OTP is: " + otp);
 		javaMailSender.send(message);
 	}
+	
 
 	public ResponseEntity<String> verifyOtp(User user, String enteredOtp) {
 		try {
@@ -238,16 +241,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-//	public User login(String userName, String password) throws AuthException {
-//	    // Authenticate the user
-//	    User user = userRepository.findByUserNameAndPassword(userName, password);
-//
-//	    if (user != null) {
-//	        return user;
-//	    } else {
-//	        throw new AuthException("Invalid login credentials");
-//	    }
-//	}
+
 	public User login(String userName, String password) throws AuthException {
 		// Check if the user exists in the database
 		User user = userRepository.findByUserName(userName);
@@ -264,27 +258,99 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-	 public User updatePassword(String email, User updatedUser) {
-	     Optional<User> optionalUser = userRepository.findByEmail(email);
-	     if (optionalUser.isPresent()) {
-	         User existingUser = optionalUser.get();
-	         
-	         existingUser.setPassword(updatedUser.getPassword());
-	         
-	         User savedUser = userRepository.save(existingUser);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public String generateOtpAndSendEmailForUser(String email) {
+		try {
+			// Generate a random 6-digit OTP
+			String otp = String.format("%06d", new Random().nextInt(1000000));
 
-	         sendNewPasswordEmail(existingUser.getEmail(), existingUser.getUserName(), updatedUser.getPassword());
+			// Save the OTP to the cache
+			otpCacheforgot.put(email, otp);
 
-	         return savedUser;
-	     }
-	     return null;
-	 }
-	 private void sendNewPasswordEmail(String to, String username, String newPassword) {
-	     SimpleMailMessage message = new SimpleMailMessage();
-	     message.setTo(to);
-	     message.setSubject("Password Updated");
-	     message.setText("Hello " + username + ",\n\nYour password has been successfully updated.\nNew Password: " + newPassword);
-	     javaMailSender.send(message);
-	 }
+			// Log the generated OTP for debugging (you can remove this in production)
+			System.out.println("Generated OTP for user " + email + ": " + otp);
+
+			// Return the generated OTP
+			return otp;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	private void sendOtpEmailForForgotPassword(String to, String eamil, String otp) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(to);
+		message.setSubject("OTP Verification for forgot password");
+		message.setText("Hello mr  " + eamil + ",\n\nThe requested OTP for forgot password is: " + otp);
+		javaMailSender.send(message);
+	}
+	
+	public String updatePassword(String email) {
+	    Optional<User> optionalUser = userRepository.findByEmail(email);
+	    
+	    if (optionalUser.isPresent()) {
+	        User user = optionalUser.get();
+	      String otp=  generateOtpAndSendEmailForUser(email);
+	      sendOtpEmailForForgotPassword(user.getEmail(), user.getUserName(), otp);
+	        return user.getEmail(); 
+	    }
+	    return null; 
+	}
+	
+	
+
+	public String verifyOtpForForgotPassword(String enteredOtp) {
+	    try {
+	        // Iterate over all users in temporary storage
+	        for (Map.Entry<String, String> entry : otpCacheforgot.entrySet()) {
+	            String storedOtp = entry.getValue();
+	            // Compare the entered OTP with the stored OTP
+	            if (storedOtp.equals(enteredOtp)) {
+	                // If OTP matches, remove it from the cache
+	             
+	                // OTP verification successful, return the OTP
+	                return storedOtp;
+	            }
+	        }
+	        // If no matching OTP is found in temporary storage, return null
+	        return null;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // Exception occurred, return null
+	        return null;
+	    }
+	}
+	 public  String getEmailFromOTPVerification(String otp) {
+	        // Iterate over all users in temporary storage
+	        for (Map.Entry<String, String> entry : otpCacheforgot.entrySet()) {
+	            String storedOtp = entry.getValue();
+	            // Compare the entered OTP with the stored OTP
+	            if (storedOtp.equals(otp)) {
+	                // If OTP matches, return the email associated with the OTP
+	            	System.out.println("the otp is "+entry.getKey());
+	                return entry.getKey();
+	            }
+	        }
+	        // If no matching OTP is found in temporary storage, return null
+	        return null;
+	    }
 
 }
