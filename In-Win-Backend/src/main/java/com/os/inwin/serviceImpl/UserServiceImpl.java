@@ -283,7 +283,7 @@ public class UserServiceImpl implements UserService {
 			String otp = String.format("%06d", new Random().nextInt(1000000));
 
 			// Save the OTP to the cache
-			otpCacheforgot.put(email, otp);
+			otpCacheforgot.put(email,otp);
 
 			// Log the generated OTP for debugging (you can remove this in production)
 			System.out.println("Generated OTP for user " + email + ": " + otp);

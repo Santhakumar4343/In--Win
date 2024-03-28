@@ -78,7 +78,7 @@ const Login = ({ }) => {
 
   return (
     <div>
-      <h2 className="text-center mt-1" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "black" }}>In-Win: ONiE Soft Wealth Management System</h2>
+      <h2 className="text-center mt-1" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}>In-Win: ONiE Soft Wealth Management System</h2>
       <div className="Login-Main">
 
         <div className="login">

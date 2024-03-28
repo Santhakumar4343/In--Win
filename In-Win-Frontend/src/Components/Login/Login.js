@@ -5,7 +5,7 @@ import "../Login/Login.css";
 import NomineeLogin from "../Login/NomineeLogin";
 import AdminLogin from "../Login/AdminLogin";
 import UserLogin from "../Login/UserLogin";
-
+import SummaryImage from "../../assets/Summary_1.jpg";
 import { MenuItem, Select } from "@mui/material";
 
 const Login = ({ }) => {
@@ -16,7 +16,7 @@ const Login = ({ }) => {
   };
 
   return (
-    <div className="">
+    <div className="" style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: 'cover' }}>
       <div className="d-flex justify-content-end" style={{ marginRight: "50px" }}>
         <Select
           variant="outlined"

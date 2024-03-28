@@ -441,7 +441,7 @@ function Summary() {
 
       <div className="container">
   <div className="row justify-content-center">
-    <div className="col-md-6 mt-5">
+    <div className="col-md-6  mt-5">
       <div className="card h-100" style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: "cover", justifyContent: "center" }}>
         <div className="card-body">
           <h5 className="card-title text-center" style={{ color: "white",fontSize:"22px" }}>Monthly Expenses {currency}</h5>

@@ -5,18 +5,22 @@ import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { BASE_URl } from "../API/Api";
 import { MenuItem, Select } from "@mui/material";
-
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 const Register = () => {
   const navigate = useNavigate();
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const [user, setUserDetails] = useState({
     userName: "",
     email: "",
     password: "",
     mobileNumber: "",
-    userType:"User"
+    userType: "User",
   });
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [otp, setOtp] = useState("");
@@ -38,7 +42,7 @@ const Register = () => {
     if (!values.userName) {
       error.userName = "User Name is required";
     } else if (values.userName.length < 3) {
-      error.userName = "enter a valid user name"
+      error.userName = "enter a valid user name";
     }
     if (!values.email) {
       error.email = "Email is required";
@@ -89,10 +93,7 @@ const Register = () => {
       });
   };
 
-
   return (
-
-    
     <div>
       {/* <div className="d-flex justify-content-end" style={{marginRight:"50px"}}>
         <Select
@@ -112,7 +113,16 @@ const Register = () => {
         {!otpModalOpen && (
           <div className="register">
             <form>
-              <h2 className="text-center mt-1" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "black" }}>Create your account</h2>
+              <h2
+                className="text-center mt-1"
+                style={{
+                  fontWeight: 700,
+                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+                  color: "black",
+                }}
+              >
+                Create your account
+              </h2>
               <input
                 type="text"
                 name="userName"
@@ -131,14 +141,23 @@ const Register = () => {
                 value={user.email}
               />
               <p className="error">{formErrors.email}</p>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                onChange={changeHandler}
-                value={user.password}
-              />
+
+              <div className="password-input">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  onChange={changeHandler}
+                  value={user.password}
+                />
+                <div
+                  className="password-toggle-icon"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </div>
+              </div>
               <p className="error">{formErrors.password}</p>
               <input
                 type="text"
@@ -166,11 +185,13 @@ const Register = () => {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
             />
-            <button className="otp-button" onClick={verifyOtp}>Verify OTP</button>
+            <button className="otp-button" onClick={verifyOtp}>
+              Verify OTP
+            </button>
           </div>
         )}
       </div>
-      </div>
+    </div>
   );
 };
 

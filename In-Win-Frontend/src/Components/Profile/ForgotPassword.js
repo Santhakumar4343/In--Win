@@ -4,7 +4,7 @@ import "../Register/Register.css";
 import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { BASE_URl } from "../API/Api";
-
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
@@ -13,7 +13,22 @@ const ForgotPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
+  const validatePassword = (password) => {
+    const error = {};
+    if (!password) {
+      error.password = "Password is required";
+    } else if (password.length < 4) {
+      error.password = "Password must be more than 4 characters";
+    } else if (password.length > 10) {
+      error.password = "Password cannot exceed more than 10 characters";
+    }
+    return error;
+  };
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
@@ -22,15 +37,14 @@ const ForgotPassword = () => {
   const sendOtp = () => {
     const emailErrors = {};
     if (!validateEmail(email)) {
-
       emailErrors.email = "Invalid email format";
       setErrors(emailErrors);
       return;
     }
- const formData = new FormData();
+    const formData = new FormData();
     formData.append("email", email);
     axios
-      .post(`${BASE_URl}/api/users/update-password`,formData )
+      .post(`${BASE_URl}/api/users/update-password`, formData)
       .then((res) => {
         sessionStorage.setItem("verifiedEmail", email);
         setStep(2);
@@ -40,7 +54,6 @@ const ForgotPassword = () => {
       });
   };
   const verifyOtp = () => {
-    
     axios
       .post(`${BASE_URl}/api/users/verify-otp/forgotpassword?otp=${otp}`)
       .then((res) => {
@@ -54,15 +67,21 @@ const ForgotPassword = () => {
   };
 
   const savePassword = () => {
+
+    const passwordErrors = validatePassword(newPassword);
+    if (Object.keys(passwordErrors).length > 0) {
+      setErrors(passwordErrors);
+      return;
+    }
     const formData = new FormData();
     formData.append("newPassword", newPassword);
-  
+
     const emailFromSession = sessionStorage.getItem("verifiedEmail");
     if (!emailFromSession) {
       console.error("Email not verified or session expired");
       return;
     }
-  
+
     axios
       .post(`${BASE_URl}/api/users/set-new-password`, formData)
       .then((res) => {
@@ -72,8 +91,6 @@ const ForgotPassword = () => {
         // Handle error
       });
   };
-  
-  
 
   return (
     <div>
@@ -87,10 +104,12 @@ const ForgotPassword = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={{width:"320px",height:"50px",borderRadius:"10px"}}
+                style={{ width: "320px", height: "50px", borderRadius: "10px" }}
               />
               {errors.email && <p>{errors.email}</p>}
-              <button className="button_common"  onClick={sendOtp}>Send OTP</button>
+              <button className="button_common" onClick={sendOtp}>
+                Send OTP
+              </button>
             </div>
           )}
 
@@ -102,24 +121,38 @@ const ForgotPassword = () => {
                 placeholder="Enter OTP"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                style={{width:"320px",height:"50px",borderRadius:"10px"}}
+                style={{ width: "320px", height: "50px", borderRadius: "10px" }}
               />
-              <button className="button_common" onClick={verifyOtp}>Verify OTP</button>
+              <button className="button_common" onClick={verifyOtp}>
+                Verify OTP
+              </button>
             </div>
           )}
 
           {step === 3 && (
             <div>
               <h2>Set New Password</h2>
-              <input
-                type="password"
-                placeholder="Enter new password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                style={{width:"320px",height:"50px",borderRadius:"10px"}}
-              />
-              {errors.password && <p>{errors.password}</p>}
-              <button  className="button_common" onClick={savePassword}>Save Password</button>
+              <div className="password-input">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  placeholder="Enter new password"
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  value={newPassword}
+                  style={{width:"320px",height:"50px",borderRadius:"10px"}}
+                />
+                <div
+                  className="password-toggle-icon"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </div>
+              </div>
+              {errors.password && <p style={{color:"red"}}>{errors.password}</p>}
+              <button className="button_common" onClick={savePassword}>
+                Save Password
+              </button>
             </div>
           )}
         </div>
