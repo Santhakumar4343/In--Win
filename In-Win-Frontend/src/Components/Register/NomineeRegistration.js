@@ -5,8 +5,12 @@ import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { BASE_URl } from "../API/Api";
 import { MenuItem, Select } from "@mui/material";
-
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const navigate = useNavigate();
 
   const [formErrors, setFormErrors] = useState({});
@@ -95,6 +99,17 @@ const Register = () => {
 
     
     <div>
+       <h2
+                className="text-center "
+                style={{
+                  fontWeight: 700,
+                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+                  color: "white",
+                  marginTop:"-8px"
+                }}
+              >
+                In-Win: ONiE Soft Wealth Management System
+              </h2>
       {/* <div className="d-flex justify-content-end" style={{marginRight:"50px"}}>
         <Select
           variant="outlined"
@@ -113,7 +128,16 @@ const Register = () => {
         {!otpModalOpen && (
           <div className="register">
             <form>
-              <h1>Create your account</h1>
+            <h2
+                className="text-center mt-1"
+                style={{
+                  fontWeight: 700,
+                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+                  color: "black",
+                }}
+              >
+                Create your account
+              </h2>
               <input
                 type="text"
                 name="userName"
@@ -132,14 +156,22 @@ const Register = () => {
                 value={user.email}
               />
               <p className="error">{formErrors.email}</p>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                onChange={changeHandler}
-                value={user.password}
-              />
+              <div className="password-input">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  onChange={changeHandler}
+                  value={user.password}
+                />
+                <div
+                  className="password-toggle-icon"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </div>
+              </div>
               <p className="error">{formErrors.password}</p>
               <input
                 type="text"

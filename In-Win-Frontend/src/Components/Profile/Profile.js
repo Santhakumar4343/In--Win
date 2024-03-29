@@ -156,7 +156,7 @@ function Profile() {
         <div>
             <Button variant="primary" onClick={handleEdit}>Edit Personal Details</Button>
             <Button variant="primary" className='m-1 mb-2' onClick={handleEditProfessional}>Edit Professional Details</Button>
-            <LogoutIcon variant="primary" style={{marginLeft:"560px",fontSize:"36px"}}  onClick={handleLogout}>Edit Personal Details</LogoutIcon>
+            <LogoutIcon variant="primary" style={{marginLeft:"750px",fontSize:"36px"}}  onClick={handleLogout}></LogoutIcon>
             <h5 >Personal Details</h5>
             <table class="table table-striped mt-3" style={{borderRadius:"10px"}}>
                 <thead>

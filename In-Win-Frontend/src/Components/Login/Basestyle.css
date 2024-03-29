@@ -4,9 +4,20 @@
     padding: 15px 30px;
     border: none;
     font-size: 22px;
-    border-radius: 15px;
+    border-radius: 205px;
     margin: 1rem;
     width: 90%;
+}
+
+.button_common_forgot{
+    background-color: olivedrab;
+    color: white;
+    padding: 10px;
+    border: none;
+    font-size: 18px;
+    border-radius: 25px;
+    margin: 1rem;
+    width: 60%;
 }
 .otp-button {
     background-color: olivedrab;

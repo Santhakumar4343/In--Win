@@ -84,7 +84,16 @@ const Login = ({ }) => {
         <div className="login">
 
           <form>
-            <h3>Login</h3>
+          <h2
+                className="text-center mt-1"
+                style={{
+                  fontWeight: 700,
+                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+                  color: "black",
+                }}
+              >
+                Login
+              </h2>
             <input
               type="text"
               name="userName"
@@ -108,7 +117,7 @@ const Login = ({ }) => {
             </div>
           </div>
             <p className="error">{formErrors.password}</p>
-            <ReCAPTCHA
+            <ReCAPTCHA 
               className="capcha"
               sitekey="6Lc_2pkpAAAAAJOgqj9SENH88SfnVAQ7xR6WePoy
             "
@@ -127,3 +136,4 @@ const Login = ({ }) => {
 };
 
 export default Login;
+ 

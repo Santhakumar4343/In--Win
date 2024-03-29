@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { BASE_URl } from "../API/Api";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import SummaryImage from "../../assets/Summary_1.jpg";
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
@@ -14,6 +15,7 @@ const ForgotPassword = () => {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+ 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -94,7 +96,7 @@ const ForgotPassword = () => {
 
   return (
     <div>
-      <div className="Register-Main">
+      <div className="Register-Main-forgotPassword"  style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: 'cover' }}>
         <div className="register">
           {step === 1 && (
             <div>
@@ -106,10 +108,15 @@ const ForgotPassword = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 style={{ width: "320px", height: "50px", borderRadius: "10px" }}
               />
-              {errors.email && <p>{errors.email}</p>}
-              <button className="button_common" onClick={sendOtp}>
+              {errors.email && <p className="text-danger">{errors.email}</p>}
+              <div className="d-flex">
+              <button className="button_common_forgot" onClick={sendOtp}>
                 Send OTP
               </button>
+              <button className="button_common_forgot" onClick={() => navigate("/")}>
+  Cancel
+</button>
+</div>
             </div>
           )}
 

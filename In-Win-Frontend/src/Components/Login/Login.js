@@ -27,14 +27,14 @@ const Login = ({ }) => {
         >
           <MenuItem value={"User"}>User</MenuItem>
           <MenuItem value={"Nominee"}>Nominee</MenuItem>
-          <MenuItem value={"Admin"}>Admin</MenuItem>
+          {/* <MenuItem value={"Admin"}>Admin</MenuItem> */}
         </Select>
       </div>
       <h1></h1>
       <div >
         {role === "User" && <UserLogin />}
         {role === "Nominee" && <NomineeLogin />}
-        {role === "Admin" && <AdminLogin />}
+        {/* {role === "Admin" && <AdminLogin />} */}
       </div>
     </div>
   );

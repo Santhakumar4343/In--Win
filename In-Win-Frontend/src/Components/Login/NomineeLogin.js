@@ -4,7 +4,7 @@ import "../Login/Login.css";
 import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { BASE_URl } from "../API/Api";
-import { CommentSharp } from "@mui/icons-material";
+
 import ReCAPTCHA from "react-google-recaptcha";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 const Login = ({ }) => {
@@ -78,13 +78,22 @@ const Login = ({ }) => {
 
   return (
     <div>
-      <h2 className="text-center mt-3" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "black" }}>In-Win: ONiE Soft Wealth Management System</h2>
-      <div className="Login-Main">
+      <h2 className="text-center mt-3" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "White" }}>In-Win: ONiE Soft Wealth Management System</h2>
+      <div className="Login-Main-Nominee">
 
         <div className="login">
 
           <form>
-            <h3>Login</h3>
+          <h2
+                className="text-center mt-1"
+                style={{
+                  fontWeight: 700,
+                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+                  color: "black",
+                }}
+              >
+              Login
+              </h2>
             <input
               type="text"
               name="userName"

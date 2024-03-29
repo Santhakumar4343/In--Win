@@ -94,21 +94,19 @@ const Register = () => {
   };
 
   return (
-    <div>
-      {/* <div className="d-flex justify-content-end" style={{marginRight:"50px"}}>
-        <Select
-          variant="outlined"
-          labelId="demo-simple-select-label"
-          value={role}
-          style={{ width: 100, height: 40, color: "white", borderColor: "white" }}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <MenuItem value={"User"}>User</MenuItem>
-          <MenuItem value={"Nominee"}>Nominee</MenuItem>
-          <MenuItem value={"Admin"}>Admin</MenuItem>
-        </Select>
-
-      </div> */}
+   
+     <div>
+       <h2
+                className="text-center "
+                style={{
+                  fontWeight: 700,
+                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+                  color: "white",
+                  marginTop:"-5px"
+                }}
+              >
+                In-Win: ONiE Soft Wealth Management System
+              </h2>
       <div className="Register-Main">
         {!otpModalOpen && (
           <div className="register">
@@ -191,7 +189,7 @@ const Register = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
   );
 };
 

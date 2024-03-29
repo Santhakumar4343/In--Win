@@ -26,13 +26,20 @@
 
 .Login-Main {
     display: flex;
-   margin-top: -30px;
+   margin-top: -12px;
     width: 100vw;
     height: 90vh;
     justify-content: center;
     align-items: center;
     }
-
+.Login-Main-Nominee{
+  display: flex;
+ 
+   width: 100vw;
+   height: 87.3vh;
+   justify-content: center;
+   align-items: center;
+}
     .password-input {
         position: relative;
       }

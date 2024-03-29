@@ -6,9 +6,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserDashBoard from './Components/User/UserDashBoard';
 import NomineeDashboard from './Components/Nominee/NomineeDashboard';
 import ForgotPassword from './Components/Profile/ForgotPassword';
+import SummaryImage from './assets/Summary_1.jpg';
 function App() {
   return (
-    <div className="App">
+    <div className="App"  style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: 'cover' }}>
       <Router>
         <Routes>
           <Route
