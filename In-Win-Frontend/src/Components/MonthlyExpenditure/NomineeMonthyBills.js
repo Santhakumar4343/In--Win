@@ -11,7 +11,9 @@ import { useLocation } from "react-router-dom";
 
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
-
+import BillsImage from "../../assets/bills.jpg"
+import BillsImage1 from "../../assets/bills_1.jpg"
+import BillsImage2 from "../../assets/Bills_2.jpg"
 function Bills() {
     const location = useLocation();
     const { state: { userData } = {} } = location;
@@ -19,8 +21,15 @@ function Bills() {
     const [bills, setBills] = useState([]);
     const [selectedBill, setSelectedBill] = useState(null);
     const { exchangeRate, currency } = CurrencyState();
+
     console.log(exchangeRate)
-    const titleColors = ["#42ff75", "#3ba3ed", "#fc47ed", "#e82e44", "#f5c802", "#f2a04e"];
+    const billPics=[BillsImage,BillsImage2,BillsImage1]
+    const backgroundImageStyle = (index) => {
+        return {
+            backgroundImage: `url(${billPics[index % billPics.length]})`,
+            backgroundSize: 'cover',
+        };
+    };
     const handleEdit = (bill) => {
         setSelectedBill(bill);
         setShowModal(true);
@@ -159,12 +168,12 @@ function Bills() {
     return (
         <div>
             <div className="row row-cols-1 row-cols-md-3 g-4 mt-2">
-                {bills.map((bill, index) => (
+                {bills.map((bill,index) => (
                     <div className="col-md-4 mb-3" key={bill.id}>
-                        <div className="card h-100 d-flex flex-column border border-dark" style={{}}>
+                        <div className="card h-100 d-flex flex-column border border-dark" style={backgroundImageStyle(index)}>
                             <div className="card-body">
-                                <p style={{ color: "white" }}><strong>Bill Name:</strong> {bill.name}</p>
-                                <p style={{ color: "white" }}><strong>Bill Amount:</strong> {renderPrice(bill.amount) }  {currency}</p>
+                                <p style={{ color: "black" }}><strong>Bill Name:</strong> {bill.name}</p>
+                                <p style={{ color: "black" }}><strong>Bill Amount:</strong> {renderPrice(bill.amount) }  {currency}</p>
                             </div>
                             {/* <div className="card-footer d-flex justify-content-center align-items-center border border-dark ">
                                 <EditIcon className='fs-4 m-2' style={{ color: "white" }} onClick={() => { handleEdit(bill) }}></EditIcon>

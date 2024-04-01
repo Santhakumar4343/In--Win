@@ -84,6 +84,14 @@ function BankACs() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewAccountDate({ 
+      id: '',
+    bankName: '',
+    accountHolderName:"",
+    accountNumber: '',
+    ifscCode: '',
+    branch: '',
+    accountType:"",})
   };
 
   const handleInputChange = (e) => {

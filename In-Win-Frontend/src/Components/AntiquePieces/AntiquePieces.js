@@ -83,6 +83,13 @@ function AntiquePieces() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewAntiquePieceData({ id: '',
+    name: '',
+    years:"",
+    buyDate: '',
+    price:"",
+    totalAmount: '',
+    lastUpdateDate: '',})
   };
 
   const handleInputChange = (e) => {

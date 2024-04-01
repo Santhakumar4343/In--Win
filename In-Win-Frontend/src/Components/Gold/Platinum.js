@@ -70,6 +70,17 @@ function Platinum() {
     };
     const handleCloseModal = () => {
         setShowModal(false);
+        setNewPlatinumData({
+            id: '',
+            name: '',
+    
+            purchasePrice: '',
+            buyDate: '',
+            quantity: '',
+            currentPrice: '',
+            lastUpdateDate: '',
+        }
+            )
     };
 
     const handleInputChange = (e) => {

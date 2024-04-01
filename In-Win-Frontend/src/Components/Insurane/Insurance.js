@@ -81,6 +81,12 @@ function Insurance() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewInsuranceData({    id: '',
+    name: '',
+    premium:"",
+    buyDate: '',
+    totalAmount: '',
+    lastUpdateDate: '',})
   };
 
   const handleInputChange = (e) => {

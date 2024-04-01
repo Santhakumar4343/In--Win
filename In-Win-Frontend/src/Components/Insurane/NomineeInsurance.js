@@ -11,7 +11,9 @@ import { useLocation } from "react-router-dom";
 
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
-
+import InsuranceImage from "../../assets/Insurance.jpg"
+import InsuranceImage1 from "../../assets/Insurance_1.jpg"
+import InsuranceImage2 from "../../assets/Insurance_2.jpg"
 function Insurance() {
   const location = useLocation();
   const { state: { userData } = {} } = location;
@@ -20,7 +22,14 @@ function Insurance() {
   const [selectedInsurance, setSelectedInsurance] = useState(null);
   const { exchangeRate ,currency} = CurrencyState();
   console.log(exchangeRate)
-  const titleColors = ["#42ff75", "#3ba3ed", "#fc47ed", "#e82e44", "#f5c802", "#f2a04e"];
+  const InsurancePics=[InsuranceImage,InsuranceImage1,InsuranceImage2];
+  const backgroundImageStyle = (index) => {
+    return {
+        backgroundImage: `url(${InsurancePics[index % InsurancePics.length]})`,
+        backgroundSize: 'cover',
+      
+    };
+};
   const handleEdit = (insurance) => {
     setSelectedInsurance(insurance);
     setShowModal(true);
@@ -164,7 +173,7 @@ function Insurance() {
      <div className="row row-cols-1 row-cols-md-3 g-4 mt-2">
         {insurance.map((insurance, index) => (
           <div className="col-md-4 mb-3" key={insurance.id}>
-            <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundColor: index < titleColors.length ? titleColors[index] : titleColors[index % titleColors.length] }}>
+            <div className="card h-100 d-flex flex-column border border-dark" style={backgroundImageStyle(index)}>
               <div className="card-body">
                 <h5 className="card-title text-center" style={{ color: "white" }}>{insurance.name}</h5>
                 <p style={{ color: "white" }}><strong>Premium:</strong> {renderPrice(insurance.premium)} {currency}</p>

@@ -7,6 +7,7 @@ import UserDashBoard from './Components/User/UserDashBoard';
 import NomineeDashboard from './Components/Nominee/NomineeDashboard';
 import ForgotPassword from './Components/Profile/ForgotPassword';
 import SummaryImage from './assets/Summary_1.jpg';
+import ForgotPasswordForNominee from './Components/Profile/ForgotPasswordForNominee';
 function App() {
   return (
     <div className="App"  style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: 'cover' }}>
@@ -18,6 +19,7 @@ function App() {
           ></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="/forgot-password-nominee" element={<ForgotPasswordForNominee />}></Route>
           <Route path="/userDashBoard" element={<UserDashBoard />}></Route>
           <Route path="/nomineeDashBoard" element={<NomineeDashboard />}></Route>
         </Routes>

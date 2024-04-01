@@ -11,7 +11,9 @@ import { useLocation } from "react-router-dom";
 
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
-
+import StockImage1 from  "../../../src/assets/Sotck.jpg";
+import StockImage2 from  "../../../src/assets/Stock_2.jpg";
+import StockImage3 from  "../../../src/assets/Stock_3.jpg";
 function Stocks() {
     const location = useLocation();
     const { state: { userData } = {} } = location;
@@ -21,7 +23,14 @@ function Stocks() {
     const { exchangeRate } = CurrencyState();
     console.log(exchangeRate)
     const titleColors = ["#42ff75", "#3ba3ed", "#fc47ed", "#e82e44", "#f5c802", "#f2a04e"];
-
+    const stockImages=[StockImage1,StockImage3,StockImage2];
+    const backgroundImageStyle = (index) => {
+      return {
+          backgroundImage: `url(${stockImages[index % stockImages.length]})`,
+          backgroundSize: 'cover',
+        
+      };
+  };
     useEffect(() => {
         if (userData && userData.owner) {
             fetchStocks();
@@ -45,7 +54,7 @@ function Stocks() {
             <div className="row row-cols-1 row-cols-md-3 g-4 mt-2">
                 {stocks.map((stock, index) => (
                     <div className="col-md-4 mb-3" key={stock.id}>
-                        <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundColor: index < titleColors.length ? titleColors[index] : titleColors[index % titleColors.length] }}>
+                        <div className="card h-100 d-flex flex-column border border-dark" style={backgroundImageStyle(index)}>
                             <div className="card-body">
                                 <h5 className="card-title text-center" style={{ color: "white" }}>{stock.name}</h5>
                                 <p style={{ color: "white" }}><strong >Symbol:</strong> {stock.symbol}</p>

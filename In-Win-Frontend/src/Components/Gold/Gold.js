@@ -72,6 +72,17 @@ function Gold() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewGoldData({
+      id: '',
+      name: '',
+      symbol: '',
+      carat:'', 
+      purchasePrice: '',
+      buyDate: '',
+      quantity: '',
+      currentPrice: '',
+      lastUpdateDate: '',
+    })
   };
 
   const handleInputChange = (e) => {

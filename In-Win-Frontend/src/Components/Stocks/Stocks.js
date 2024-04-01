@@ -84,6 +84,16 @@ const renderPrice = (price) => {
 };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewStockData({
+    id: '',
+    name: '',
+    symbol: '',
+    purchasePrice: '',
+    buyDate: '',
+    quantity: '',
+    currentPrice: '',
+    lastUpdateDate: '',
+    })
   };
 
   const handleInputChange = (e) => {

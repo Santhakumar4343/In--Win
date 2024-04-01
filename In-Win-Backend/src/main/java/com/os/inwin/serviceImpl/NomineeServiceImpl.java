@@ -173,7 +173,116 @@ public class NomineeServiceImpl implements NomineeService{
 	public List<Nominee> getAllNomineesByOwner(String owner) {
 		return  nomineeRepository.findByOwner(owner);
 	}
+	@Override
+	public Nominee UpdateNomineeProfile(long id, Nominee user) {
+		Optional<Nominee> optionalNominee = nomineeRepository.findById(id);
+	    if (optionalNominee.isPresent()) {
+	        Nominee existingUser = optionalNominee.get();
+	        existingUser.setUserName(user.getUserName());
+	        existingUser.setEmail(user.getEmail());
+	        existingUser.setPassword(user.getPassword());
+	        existingUser.setMobileNumber(user.getMobileNumber());
+	        existingUser.setUserType(user.getUserType());
+	       
+	        existingUser.setGender(user.getGender());
+	        existingUser.setFatherName(user.getFatherName());
+	        existingUser.setDob(user.getDob());
+	        existingUser.setPanNumber(user.getPanNumber());
+	        existingUser.setAadhar(user.getAadhar());
+	        existingUser.setVoterId(user.getVoterId());
+	        existingUser.setPresentAddress(user.getPresentAddress());
+	        existingUser.setPermanentAddress(user.getPermanentAddress());
+	        existingUser.setRelation(user.getRelation());
+	        return nomineeRepository.save(existingUser);
+	    }
+	    return null;
+	}
 	
+	
+	
+	
+	
+	
+	
+	
+	//forgot password for men
+	private final Map<String, String> otpCacheforgotNominee = new ConcurrentHashMap<>();
+	public String generateOtpAndSendEmailForUser(String email) {
+		try {
+			// Generate a random 6-digit OTP
+			String otp = String.format("%06d", new Random().nextInt(1000000));
+
+			// Save the OTP to the cache
+			otpCacheforgotNominee.put(email,otp);
+
+			// Log the generated OTP for debugging (you can remove this in production)
+			System.out.println("Generated OTP for user " + email + ": " + otp);
+
+			// Return the generated OTP
+			return otp;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	private void sendOtpEmailForForgotPassword(String to, String eamil, String otp) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(to);
+		message.setSubject("OTP Verification for forgot password");
+		message.setText("Hello mr  " + eamil + ",\n\nThe requested OTP for forgot password is: " + otp);
+		javaMailSender.send(message);
+	}
+	
+	public String updatePassword(String email) {
+	    Optional<Nominee> optionalUser = nomineeRepository.findByEmail(email);
+	    
+	    if (optionalUser.isPresent()) {
+	        Nominee user = optionalUser.get();
+	      String otp=  generateOtpAndSendEmailForUser(email);
+	      sendOtpEmailForForgotPassword(user.getEmail(), user.getUserName(), otp);
+	        return user.getEmail(); 
+	    }
+	    return null; 
+	}
+	
+	
+
+	public String verifyOtpForForgotPassword(String enteredOtp) {
+	    try {
+	        // Iterate over all users in temporary storage
+	        for (Map.Entry<String, String> entry : otpCacheforgotNominee.entrySet()) {
+	            String storedOtp = entry.getValue();
+	            // Compare the entered OTP with the stored OTP
+	            if (storedOtp.equals(enteredOtp)) {
+	                // If OTP matches, remove it from the cache
+	             
+	                // OTP verification successful, return the OTP
+	                return storedOtp;
+	            }
+	        }
+	        // If no matching OTP is found in temporary storage, return null
+	        return null;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // Exception occurred, return null
+	        return null;
+	    }
+	}
+	 public  String getEmailFromOTPVerification(String otp) {
+	        // Iterate over all users in temporary storage
+	        for (Map.Entry<String, String> entry : otpCacheforgotNominee.entrySet()) {
+	            String storedOtp = entry.getValue();
+	            // Compare the entered OTP with the stored OTP
+	            if (storedOtp.equals(otp)) {
+	                // If OTP matches, return the email associated with the OTP
+	            	System.out.println("the otp is "+entry.getKey());
+	                return entry.getKey();
+	            }
+	        }
+	        // If no matching OTP is found in temporary storage, return null
+	        return null;
+	    }
+
 	
 	
 	

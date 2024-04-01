@@ -4,8 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 import { useLocation } from "react-router-dom";
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
@@ -276,7 +275,7 @@ function Profile() {
             <th className='border border-dark'>User Name</th>
             <th className='border border-dark'>Email</th>
             <th className='border border-dark'>Mobile Number</th>
-            <th className='border border-dark'>User Type</th>
+            <th className='border border-dark'>Relation</th>
           </tr>
         </thead>
         <tbody className='border border-dark'>
@@ -286,7 +285,7 @@ function Profile() {
               <td className='border border-dark'>{nominee.userName}</td>
               <td className='border border-dark'>{nominee.email}</td>
               <td className='border border-dark'>{nominee.mobileNumber}</td>
-              <td className='border border-dark'> {nominee.userType}</td>
+              <td className='border border-dark'> {nominee.relation}</td>
             </tr>
           ))}
         </tbody>

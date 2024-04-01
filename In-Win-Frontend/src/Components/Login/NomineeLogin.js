@@ -127,7 +127,8 @@ const Login = ({ }) => {
               Login
             </button>
           </form>
-          <NavLink to="/register">Not yet registered? Register Now</NavLink>
+          <NavLink to="/register">Not yet registered? Register Now</NavLink><br></br>
+          <NavLink to="/forgot-password-nominee">Forgot Password </NavLink>
         </div>
       </div>
     </div>

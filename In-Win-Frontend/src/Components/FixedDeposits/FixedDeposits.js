@@ -84,6 +84,15 @@ function FixedDeposits() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewFDData({
+      id: '',
+      name: '',
+      years:'',
+      bankName: '',
+      fixedDate:'',
+      totalAmount: '',
+      lastUpdateDate: '',
+    })
   };
 
   const handleInputChange = (e) => {

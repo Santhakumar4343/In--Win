@@ -100,6 +100,24 @@ function Jewellery() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewJewelleryData({
+      id: "",
+    name: '',
+    metal: '',
+    stone: '',
+    silverQuantity: '',
+    goldCarat: '',
+    goldQuantity: '',
+    platinumQuantity: '',
+    diamondShape: '',
+    diamondCarat: '',
+    diamondQuantity: '',
+    stonePrice: '',
+    buyDate: "",
+    goldCurrentPrice: "",
+    diamondCurrentPrice: '',
+    lastUpdateDate: '', 
+    })
   };
 
   const handleInputChange = (e) => {

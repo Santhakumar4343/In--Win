@@ -11,7 +11,9 @@ import { useLocation } from "react-router-dom";
 
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
-
+import JewelleryImage from '../../assets/jewelry.jpg';
+import JewelleryImage1 from '../../assets/Jewellery2.jpg';
+import JewelleryImage2 from '../../assets/Jewellery3.jpg';
 function Jewellery() {
   const location = useLocation();
   const { state: { userData } = {} } = location;
@@ -23,7 +25,14 @@ function Jewellery() {
   const titleColors = ["#42ff75", "#3ba3ed", "#fc47ed", "#e82e44", "#f5c802", "#f2a04e"];
   const [selectedMetal, setSelectedMetal] = useState('');
   const [selectedStone, setSelectedStone] = useState('');
+  const jewelleryPics = [JewelleryImage, JewelleryImage1, JewelleryImage2];
+  const backgroundImageStyle = (index) => {
+    return {
+      backgroundImage: `url(${jewelleryPics[index % jewelleryPics.length]})`,
+      backgroundSize: 'cover',
 
+    };
+  };
 
   const populateModal = () => {
     if (!selectedJewellery) return; // Add null check
@@ -197,42 +206,43 @@ function Jewellery() {
   return (
     <div>
        <div className="row row-cols-1 row-cols-md-3 g-4 " style={{ marginTop: "1px" }}>
-        {jewellery.map((jewellery, index) => (
+       {jewellery.map((jewellery, index) => (
           <div className="col-md-4 mb-3" key={jewellery.id}>
-            <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundColor: index < titleColors.length ? titleColors[index] : titleColors[index % titleColors.length] }}>
+            <div className="card h-100 d-flex flex-column border border-dark" style={backgroundImageStyle(index)}>
               <div className="card-body">
-                <h5 className="card-title text-center" style={{ color: "black" }}>{jewellery.name}</h5>
-                {jewellery.goldCarat && jewellery.goldCarat !== "" && (
-                <p style={{ color: "black" }}><strong >Gold Carat:</strong> {jewellery.goldCarat}</p>
+                <h5 className="card-title text-center" style={{ color: "white" }}>{jewellery.name}</h5>
+                {jewellery.goldCarat && jewellery.goldCarat !== "" && jewellery.goldCarat !== 0 && (
+                  <p style={{ color: "white" }}>Gold Carat:<strong> {jewellery.goldCarat}</strong></p>
                 )}
-                {jewellery.goldQuantity && jewellery.goldQuantity !== "" && (
-                <p style={{ color: "black" }}><strong >Gold Quantity:</strong> {jewellery.goldQuantity}</p>
+                {parseInt(jewellery.goldQuantity) !== 0 && (
+                  <p style={{ color: "white" }}>Gold Quantity:<strong> {jewellery.goldQuantity}</strong></p>
                 )}
-                {jewellery.silverQuantity && jewellery.silverQuantity !== "" && (
-                <p style={{ color: "black" }}><strong >Silver Quantity:</strong> {jewellery.silverQuantity}</p>
-                )}
-                {jewellery.platinumQuantity && jewellery.platinumQuantity !== "" && (
-                <p style={{ color: "black" }}><strong >Platinum Quantity:</strong> {jewellery.platinumQuantity}</p>
-                )}
-                {jewellery.diamondShape && jewellery.diamondShape !== "" && (
-                <p style={{ color: "black" }}><strong >Diamond Shape:</strong> {jewellery.diamondShape}</p>
-                )}
-                {jewellery.diamondCarat && jewellery.diamondCarat !== "" && (
-                <p style={{ color: "black" }}><strong >Diamond Carat:</strong> {jewellery.diamondCarat}</p>
-                )}
-                {jewellery.diamondQuantity && jewellery.diamondQuantity !== "" && (
-                <p style={{ color: "black" }}><strong >Diamond Quantity:</strong> {jewellery.diamondQuantity}</p>
-                )}
-                <p style={{ color: "black" }}><strong>Purchase Price:</strong> {renderPrice(jewellery.purchasePrice)} {currency}</p>
-                <p style={{ color: "black" }}><strong>Buy Date:</strong> {moment(jewellery.buyDate).format("DD-MM-YYYY")}</p>
 
-                <p style={{ color: "black" }}><strong>Current Price:</strong> {renderPrice(jewelleryPrice)} {currency} </p>
-                <p style={{ color: "black" }}><strong>Last Update Date:</strong> {moment(jewellery.lastUpdateDate).format("DD-MM-YYYY")}</p>
+                {parseInt(jewellery.silverQuantity) !== 0 && (
+                  <p style={{ color: "white" }}>Silver Quantity:<strong> {jewellery.silverQuantity}</strong></p>
+                )}
+                {parseInt(jewellery.platinumQuantity) !== 0 && (
+                  <p style={{ color: "white" }}>Platinum Quantity:<strong> {jewellery.platinumQuantity}</strong></p>
+                )}
+                {jewellery.diamondShape && jewellery.diamondShape !== "" && jewellery.diamondShape !== 0 && (
+                  <p style={{ color: "white" }}>Diamond Shape:<strong> {jewellery.diamondShape}</strong></p>
+                )}
+                {jewellery.diamondCarat && jewellery.diamondCarat !== "" && jewellery.diamondCarat !== 0 && (
+                  <p style={{ color: "white" }}>Diamond Carat:<strong> {jewellery.diamondCarat}</strong></p>
+                )}
+                {parseInt(jewellery.diamondQuantity) !== 0 && (
+                  <p style={{ color: "white" }}>Diamond Quantity:<strong> {jewellery.diamondQuantity}</strong></p>
+                )}
+                <p style={{ color: "white" }}>Purchase Price:<strong> {renderPrice(jewellery.purchasePrice)} {currency}</strong></p>
+                <p style={{ color: "white" }}>Buy Date:<strong> {moment(jewellery.buyDate).format("DD-MM-YYYY")}</strong></p>
+
+                <p style={{ color: "white" }}>Current Price:<strong> {renderPrice(jewellery.totalPriceOfJewellery)} {currency}</strong> </p>
+                <p style={{ color: "white" }}>Last Update Date:<strong> {moment(jewellery.lastUpdateDate).format("DD-MM-YYYY")}</strong></p>
 
               </div>
               {/* <div className="card-footer d-flex justify-content-center align-items-center border border-dark ">
-                <EditIcon className='fs-4 m-2' onClick={() => { handleEdit(jewellery) }}></EditIcon>
-                <DeleteForeverIcon className='fs-4' onClick={() => { handleDeleteGold(jewellery.id) }}></DeleteForeverIcon>
+                <EditIcon className='fs-4 m-2' onClick={() => { handleEdit(jewellery) }} style={{ color: "white" }}></EditIcon>
+                <DeleteForeverIcon className='fs-4' onClick={() => { handleDeleteGold(jewellery.id) }} style={{ color: "white" }}></DeleteForeverIcon>
               </div> */}
             </div>
           </div>

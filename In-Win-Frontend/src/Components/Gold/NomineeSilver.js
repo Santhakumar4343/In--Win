@@ -8,7 +8,7 @@ import '../Stocks/Stock.css';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useLocation } from "react-router-dom";
-
+import SilverImage from "../../assets/silver1.jpg"
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
 
@@ -194,7 +194,7 @@ function Silver() {
             <div className="row row-cols-1 row-cols-md-3 g-4 " style={{ marginTop: "1px" }}>
                 {silver.map((silver, index) => (
                     <div className="col-md-4 mb-3" key={silver.id}>
-                        <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundColor: index < titleColors.length ? titleColors[index] : titleColors[index % titleColors.length] }}>
+                        <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundImage: `url(${SilverImage})`, backgroundSize: 'cover' }}>
                             <div className="card-body">
                                 <h5 className="card-title text-center" style={{ color: "black" }}>{silver.name}</h5>
                                 <p style={{ color: "black" }}><strong>Purchase Price:</strong> {renderPrice(silver.purchasePrice)} {currency}</p>

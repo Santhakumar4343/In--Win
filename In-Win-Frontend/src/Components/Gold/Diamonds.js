@@ -83,6 +83,17 @@ function Diamonds() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewDiamondData({
+      id: '',
+    name: '',
+    shape:'',
+    carat:"",
+    purchasePrice: '',
+    buyDate: '',
+    quantity: '',
+    currentPrice: '',
+    lastUpdateDate: '',
+    })
   };
 
   const handleInputChange = (e) => {

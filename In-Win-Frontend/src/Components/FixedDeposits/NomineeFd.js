@@ -11,7 +11,9 @@ import { useLocation } from "react-router-dom";
 
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
-
+import FD from "../../assets/fd_1.jpg"
+import FD1 from "../../assets/fd1.jpg"
+import FD2 from "../../assets/fd3.jpg"
 function FixedDeposits() {
   const location = useLocation();
   const { state: { userData } = {} } = location;
@@ -20,12 +22,19 @@ function FixedDeposits() {
   const [selectedFixedDeposit, setSelectedFixedDeposit] = useState(null);
   const { exchangeRate ,currency} = CurrencyState();
   console.log(exchangeRate)
-  const titleColors = ["#42ff75", "#3ba3ed", "#fc47ed", "#e82e44", "#f5c802", "#f2a04e"];
+
   const handleEdit = (fixedDeposit) => {
     setSelectedFixedDeposit(fixedDeposit);
     setShowModal(true);
   };
-
+  const fdImags=[FD,FD1,FD2];
+  const backgroundImageStyle = (index) => {
+    return {
+        backgroundImage: `url(${fdImags[index % fdImags.length]})`,
+        backgroundSize: 'cover',
+       
+    };
+};
   const populateModal = () => {
     if (!selectedFixedDeposit) return;
     setNewFDData({
@@ -167,14 +176,14 @@ function FixedDeposits() {
        <div className="row row-cols-1 row-cols-md-3 g-4 mt-2">
         {fixedDeposit.map((fixedDeposit, index) => (
           <div className="col-md-4 mb-3" key={fixedDeposit.id}>
-            <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundColor: index < titleColors.length ? titleColors[index] : titleColors[index % titleColors.length] }}>
+            <div className="card h-100 d-flex flex-column border border-dark" style={backgroundImageStyle(index)}>
               <div className="card-body">
-                <h5 className="card-title text-center" style={{ color: "white" }}>{fixedDeposit.name}</h5>
-                <p style={{ color: "white" }}><strong>BankName:</strong> {fixedDeposit.bankName}</p>
-                <p style={{ color: "white" }}><strong>Years:</strong> {fixedDeposit.years}</p>
-                <p style={{ color: "white" }}><strong>Fixed Date:</strong> {moment(fixedDeposit.fixedDate).format("DD-MM-YYYY")}</p>
-                <p style={{ color: "white" }}><strong>Total Amount:</strong> {renderPrice(fixedDeposit.totalAmount)} {currency}</p>
-                <p style={{ color: "white" }}><strong>Last Update Date:</strong> {moment(fixedDeposit.lastUpdateDate).format("DD-MM-YYYY")}</p>
+                <h5 className="card-title text-center" style={{ color: "black" }}>{fixedDeposit.name}</h5>
+                <p style={{ color: "black" }}><strong>BankName:</strong> {fixedDeposit.bankName}</p>
+                <p style={{ color: "black" }}><strong>Years:</strong> {fixedDeposit.years}</p>
+                <p style={{ color: "black" }}><strong>Fixed Date:</strong> {moment(fixedDeposit.fixedDate).format("DD-MM-YYYY")}</p>
+                <p style={{ color: "black" }}><strong>Total Amount:</strong> {renderPrice(fixedDeposit.totalAmount)} {currency}</p>
+                <p style={{ color: "black" }}><strong>Last Update Date:</strong> {moment(fixedDeposit.lastUpdateDate).format("DD-MM-YYYY")}</p>
               </div>
               {/* <div className="card-footer d-flex justify-content-center align-items-center border border-dark ">
                 <EditIcon className='fs-4 m-2' onClick={() => { handleEdit(fixedDeposit) }}></EditIcon>

@@ -90,6 +90,17 @@ function Loans() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewLoanData({
+      id: '',
+      loanName: "",
+      bankName: "",
+      loanType: "",
+      tenureInYears: "",
+      rateOfInterest: "",
+      loanAmount: '',
+      monthlyEMI: "",
+      buyDate: '',
+    })
   };
 
   const handleInputChange = (e) => {

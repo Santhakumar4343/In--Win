@@ -70,6 +70,15 @@ function Silver() {
     };
     const handleCloseModal = () => {
         setShowModal(false);
+        setNewSilverData({
+            id: '',
+            name: '',
+            purchasePrice: '',
+            buyDate: '',
+            quantity: '',
+            currentPrice: '',
+            lastUpdateDate: '',
+        })
     };
 
     const handleInputChange = (e) => {

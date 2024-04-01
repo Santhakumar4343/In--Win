@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 
 import { BASE_URl } from '../API/Api';
 import { CurrencyState } from '../../CurrencyContext';
-
+import GoldImage from  "../../assets/gold.jpeg";
 function Gold() {
   const location = useLocation();
   const { state: { userData } = {} } = location;
@@ -184,7 +184,7 @@ const fetchGoldPrice = async () => {
       <div className="row row-cols-1 row-cols-md-3 g-4 " style={{marginTop:"1px"}}>
         {gold.map((goldItem, index) => (
           <div className="col-md-4 mb-3" key={goldItem.id}>
-            <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundColor: index < titleColors.length ? titleColors[index] : titleColors[index % titleColors.length] }}>
+            <div className="card h-100 d-flex flex-column border border-dark" style={{ backgroundImage: `url(${GoldImage})`, backgroundSize: 'cover' }}>
               <div className="card-body">
                 <h5 className="card-title text-center" style={{color:"black"}}>{goldItem.name}</h5>
                 <p style={{color:"black"}}><strong >Symbol:</strong> {goldItem.symbol}</p>

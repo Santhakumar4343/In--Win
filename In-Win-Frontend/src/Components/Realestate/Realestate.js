@@ -84,6 +84,16 @@ function Realestate() {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+    setNewRealestateData({
+      id: '',
+    name: '',
+
+    purchasePrice: '',
+    buyDate: '',
+    quantity: '',
+    currentPrice: '',
+    lastUpdateDate: '',
+    })
   };
 
   const handleInputChange = (e) => {

@@ -84,6 +84,15 @@ function Vehicles() {
     };
     const handleCloseModal = () => {
         setShowModal(false);
+        setNewVehicleData({
+            id: '',
+            vehicleName: '',
+            purchasePrice: "",
+            buyDate: '',
+            vehicleNumber: '',
+            lastUpdateDate: '',
+            quantity: "",
+        })
     };
 
 
