@@ -35,7 +35,7 @@ function Bills() {
         setSelectedBill(bill);
         setShowModal(true);
     };
-
+console.log("the user name is",userData.userName)
     const populateModal = () => {
         if (!selectedBill) return;
         setNewBillData({
@@ -54,7 +54,6 @@ function Bills() {
         id: '',
         name: '',
         amount: '',
-
         userName: userData ?userData.userName: ''
     });
 
@@ -63,7 +62,7 @@ function Bills() {
     }, []);
 
     const fetchBills = () => {
-        axios.get(`${BASE_URl}/api/monthlyExpenses/getMonthlyExpenditureForUser/Santha`)
+        axios.get(`${BASE_URl}/api/monthlyExpenses/getMonthlyExpenditureForUser/${userData.userName}`)
             .then(response => {
                 setBills(response.data);
             })
@@ -78,6 +77,11 @@ function Bills() {
     };
     const handleCloseModal = () => {
         setShowModal(false);
+        setNewBillData({
+            id: '',
+            name: '',
+            amount: '',
+        })
     };
 
     const handleInputChange = (e) => {

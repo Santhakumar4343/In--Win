@@ -1,5 +1,6 @@
 package com.os.inwin.serviceImpl;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -15,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.os.inwin.entity.Loan;
 import com.os.inwin.entity.User;
 import com.os.inwin.repository.UserRepository;
 import com.os.inwin.service.UserService;
@@ -46,29 +47,35 @@ public class UserServiceImpl implements UserService {
 //			return existingUser;
 //		}
 //	}
-
 	public double calculateTotalPFAmountForUser(String userName) {
-		// Find the user by username
-		User user = userRepository.findByUserName(userName);
+	    // Find the user by username
+	    User user = userRepository.findByUserName(userName);
 
-		if (user == null) {
-			// Handle the case where the user is not found
-			return 0.0;
-		}
+	    if (user == null || user.getPfStartDate() == null) {
+	        // Handle the case where the user is not found or necessary values are null
+	        return 0.0;
+	    }
 
-		// Get the user's PF start date and amount
-		LocalDate pfStartDate = user.getPfStartDate();
-		double pfAmount = user.getPfTotalPaid();
+	    // Get the user's PF start date and amount
+	    LocalDate pfStartDate = user.getPfStartDate();
+	    Double pfAmount = user.getPfTotalPaid(); // Changed double to Double
 
-		// Calculate the number of months from the start date to the current date
-		LocalDate currentDate = LocalDate.now();
-		long months = ChronoUnit.MONTHS.between(pfStartDate, currentDate);
+	    if (pfAmount == null) {
+	        // Handle the case where pfAmount is null
+	        return 0.0;
+	    }
 
-		// Multiply the number of months by the PF amount
-		double totalAmount = months * pfAmount;
+	    // Calculate the number of months from the start date to the current date
+	    LocalDate currentDate = LocalDate.now();
+	    long months = ChronoUnit.MONTHS.between(pfStartDate, currentDate);
 
-		return totalAmount;
+	    // Multiply the number of months by the PF amount
+	    double totalAmount = months * pfAmount;
+
+	    return totalAmount;
 	}
+
+
 
 	@Override
 	public User createUser(User user) {
@@ -106,7 +113,7 @@ public class UserServiceImpl implements UserService {
 //	}
 
 	@Override
-	public User updateUserPersonalDetails(long id, User user) {
+	public User updateUserPersonalDetails(long id, User user,MultipartFile imageFile) throws IOException {
 		Optional<User> optionalUser = userRepository.findById(id);
 		if (optionalUser.isPresent()) {
 			User existingUser = optionalUser.get();
@@ -125,6 +132,9 @@ public class UserServiceImpl implements UserService {
 			existingUser.setPresentAddress(user.getPresentAddress());
 			existingUser.setPermanentAddress(user.getPermanentAddress());
 			existingUser.setEmergencyContact(user.getEmergencyContact());
+			 if (imageFile != null && !imageFile.isEmpty()) {
+		            existingUser.setImageData(imageFile.getBytes());
+		        }
 			return userRepository.save(existingUser);
 		}
 		return null;
@@ -168,8 +178,10 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	
+	
 	private final Map<String, String> otpCache = new ConcurrentHashMap<>();
-	private final Map<String, String> otpCacheforgot = new ConcurrentHashMap<>();
+	
 
 	public String generateOtpAndSendEmail(User user) {
 		try {
@@ -275,7 +287,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
-	
+	private final Map<String, String> otpCacheforgot = new ConcurrentHashMap<>();
 	
 	public String generateOtpAndSendEmailForUser(String email) {
 		try {

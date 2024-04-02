@@ -77,61 +77,28 @@ const Login = ({ }) => {
 
 
   return (
-    <div>
-      <h2 className="text-center mt-1" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}>In-Win: ONiE Soft Wealth Management System</h2>
-      <div className="Login-Main">
-
-        <div className="login">
-
-          <form>
-          <h2
-                className="text-center mt-1"
-                style={{
-                  fontWeight: 700,
-                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-                  color: "black",
-                }}
-              >
-                Login
-              </h2>
-            <input
-              type="text"
-              name="userName"
-              id="userName"
-              placeholder="User Name"
-              onChange={changeHandler}
-              value={user.userName}
-            />
-            <p className="error">{formErrors.userName}</p>
-            <div className="password-input">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="Password"
-              onChange={changeHandler}
-              value={user.password}
-            />
-            <div className="password-toggle-icon" onClick={togglePasswordVisibility}>
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </div>
+    <div className="Login-Main">
+    <h2 className="" style={{ marginLeft:"-200px",fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}><strong> In-Win: ONiE Soft</strong><br></br> <strong style={{marginLeft:"-100px"}}>Wealth Management System</strong></h2>
+    <div className="login" style={{marginLeft:"40px"}}>
+      <form>
+        <h2 className="text-center mt-1" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "black" }}>Login</h2>
+        <input type="text" name="userName" id="userName" placeholder="User Name" onChange={changeHandler} value={user.userName} />
+        <p className="error">{formErrors.userName}</p>
+        <div className="password-input">
+          <input type={showPassword ? "text" : "password"} name="password" id="password" placeholder="Password" onChange={changeHandler} value={user.password} />
+          <div className="password-toggle-icon" onClick={togglePasswordVisibility}>
+            {showPassword ? <Visibility /> : <VisibilityOff />}
           </div>
-            <p className="error">{formErrors.password}</p>
-            <ReCAPTCHA 
-              className="capcha"
-              sitekey="6Lc_2pkpAAAAAJOgqj9SENH88SfnVAQ7xR6WePoy
-            "
-              onChange={() => setCaptchaVerified(true)}
-            />
-            <button className="button_common" onClick={loginHandler}>
-              Login
-            </button>
-          </form>
-          <NavLink to="/register">Not yet registered? Register Now</NavLink><br></br>
-          <NavLink to="/forgot-password">Forgot Password </NavLink>
         </div>
-      </div>
+        <p className="error">{formErrors.password}</p>
+        <ReCAPTCHA className="capcha" sitekey="6Lc_2pkpAAAAAJOgqj9SENH88SfnVAQ7xR6WePoy" onChange={() => setCaptchaVerified(true)} />
+        <button className="button_common" onClick={loginHandler}>Login</button>
+      </form>
+      <NavLink to="/register">Not yet registered? Register Now</NavLink><br></br>
+      <NavLink to="/forgot-password">Forgot Password</NavLink>
     </div>
+  </div>
+  
   );
 };
 

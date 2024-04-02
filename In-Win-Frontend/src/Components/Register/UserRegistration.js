@@ -94,22 +94,12 @@ const Register = () => {
   };
 
   return (
-   
-     <div>
-       <h2
-                className="text-center "
-                style={{
-                  fontWeight: 700,
-                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-                  color: "white",
-                  marginTop:"-5px"
-                }}
-              >
-                In-Win: ONiE Soft Wealth Management System
-              </h2>
+    <div>
+      
       <div className="Register-Main">
+      <h2 className="" style={{ marginLeft:"-200px",fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}><strong> In-Win: ONiE Soft</strong><br></br> <strong style={{marginLeft:"-100px"}}>Wealth Management System</strong></h2>
         {!otpModalOpen && (
-          <div className="register">
+          <div className="register" style={{marginLeft:"40px"}}>
             <form>
               <h2
                 className="text-center mt-1"
@@ -189,7 +179,7 @@ const Register = () => {
           </div>
         )}
       </div>
-      </div>
+    </div>
   );
 };
 

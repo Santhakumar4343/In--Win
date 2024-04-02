@@ -126,6 +126,7 @@ function Summary() {
       .then((response) => response.json())
       .then((data) => {
         setPFAmount(data.totalPf);
+       console.log(data.totalPf);
       })
       .catch((error) => {
         console.error("Error fetching PF amount :", error);

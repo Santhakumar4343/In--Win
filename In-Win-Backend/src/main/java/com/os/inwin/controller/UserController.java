@@ -1,8 +1,6 @@
 package com.os.inwin.controller;
 
-import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.os.inwin.entity.User;
 import com.os.inwin.repository.UserRepository;
 import com.os.inwin.serviceImpl.UserServiceImpl;
 
 import jakarta.security.auth.message.AuthException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -46,12 +44,19 @@ public class UserController {
 
 
 	@GetMapping("/totalPFAmount/{userName}")
-    public Map<String, Double> getTotalCurrentValue(@PathVariable String userName) {
-        double totalPF = userService.calculateTotalPFAmountForUser(userName);
-        Map<String, Double> response = new HashMap<>();
-        response.put("totalPf", totalPF);
-        return response;
-    }
+	public Map<String, Double> getTotalCurrentValue(@PathVariable String userName) {
+	    double totalPF = userService.calculateTotalPFAmountForUser(userName);
+
+	    Map<String, Double> response = new HashMap<>();
+	    if (!Double.isNaN(totalPF)) {
+	        response.put("totalPf", totalPF);
+	    } else {
+	        // Handle the situation where totalPF is NaN
+	        response.put("error", 0.0); // Or any default value or error indication
+	    }
+	    return response;
+	}
+
 
 	
 	
@@ -128,11 +133,10 @@ public class UserController {
 	}
 
 	@PutMapping("/updateUser-personal/{id}")
-	public ResponseEntity<String> updateUserPersonalDetails(@PathVariable long id, @RequestBody User user) {
-		User updateUser = userService.updateUserPersonalDetails(id, user);
-
-		return updateUser != null ? new ResponseEntity<>("User Updated Successfully", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> updateUserPersonalDetails(@PathVariable long id, @ModelAttribute User user, @RequestParam("image") MultipartFile imageFile) throws IOException {
+	    User updateUser = userService.updateUserPersonalDetails(id, user, imageFile);
+	    return updateUser != null ? new ResponseEntity<>("User Updated Successfully", HttpStatus.OK)
+	            : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping("/updateUser-professional/{id}")
@@ -180,7 +184,6 @@ public class UserController {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
     }
-
 
     @PostMapping("/verify-otp/forgotpassword")
     public ResponseEntity<String> verifyOtpForForgotpassword(@RequestParam String otp, HttpSession session) {

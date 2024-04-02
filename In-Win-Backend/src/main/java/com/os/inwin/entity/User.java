@@ -1,10 +1,12 @@
 package com.os.inwin.entity;
 
 import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 
 @Entity
 public class User {
@@ -50,6 +52,9 @@ public class User {
 	    private String userType;
 		private String country;
 		private String currency;
+		
+		@Lob
+	    private byte[] imageData;
 		public User() {
 			super();
 		}
@@ -59,7 +64,7 @@ public class User {
 				String pfUAN, LocalDate pfStartDate, double pfTotalPaid, double monthlyEMI, String occupation,
 				String designation, String companyAddress, String empId, String companyContact, String companyName,
 				String companyPhoneNumber, String companyEmail, String companyLandline, String emergencyContact,
-				String userType, String country, String currency) {
+				String userType, String country, String currency, byte[] imageData) {
 			super();
 			this.id = id;
 			this.userName = userName;
@@ -95,6 +100,7 @@ public class User {
 			this.userType = userType;
 			this.country = country;
 			this.currency = currency;
+			this.imageData = imageData;
 		}
 		public long getId() {
 			return id;
@@ -299,6 +305,12 @@ public class User {
 		}
 		public void setCurrency(String currency) {
 			this.currency = currency;
+		}
+		public byte[] getImageData() {
+			return imageData;
+		}
+		public void setImageData(byte[] imageData) {
+			this.imageData = imageData;
 		}
 		
 

@@ -99,17 +99,7 @@ const Register = () => {
 
     
     <div>
-       <h2
-                className="text-center "
-                style={{
-                  fontWeight: 700,
-                  fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-                  color: "white",
-                  marginTop:"-8px"
-                }}
-              >
-                In-Win: ONiE Soft Wealth Management System
-              </h2>
+      
       {/* <div className="d-flex justify-content-end" style={{marginRight:"50px"}}>
         <Select
           variant="outlined"
@@ -125,8 +115,9 @@ const Register = () => {
 
       </div> */}
       <div className="Register-Main">
+      <h2 className="" style={{ marginLeft:"-200px",fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}><strong> In-Win: ONiE Soft</strong><br></br> <strong style={{marginLeft:"-100px"}}>Wealth Management System</strong></h2>
         {!otpModalOpen && (
-          <div className="register">
+          <div className="register" style={{marginLeft:"40px"}}>
             <form>
             <h2
                 className="text-center mt-1"
