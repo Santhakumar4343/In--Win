@@ -225,4 +225,20 @@ public class UserController {
         }
     }
 
+    
+    @GetMapping("/allUsernames")
+    public List<String> getAllUsernames() {
+        return userRepository.findAllUserNames();
+    }
+
+    @GetMapping("/allEmails")
+    public List<String> getAllEmails() {
+        return userRepository.findAllEmails();
+    }
+
+   
+    @GetMapping("/")
+    public List<String> getAllMobileNumbers() {
+        return userRepository.findAllMobileNumber();
+    }
 }

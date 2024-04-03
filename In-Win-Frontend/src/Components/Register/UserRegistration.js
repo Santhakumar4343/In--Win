@@ -26,12 +26,49 @@ const Register = () => {
   const [otp, setOtp] = useState("");
   const [role, setRole] = useState("User");
 
+  // const changeHandler = (e) => {
+  //   const { name, value } = e.target;
+  //   setUserDetails({
+  //     ...user,
+  //     [name]: value,
+  //   });
+  // };
+
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUserDetails({
       ...user,
       [name]: value,
     });
+
+    // Check if the field being changed is username, email, or mobile number
+    if (name === "userName" || name === "email" || name === "mobileNumber") {
+      axios
+        .get(
+          `${BASE_URl}/api/users/all${
+            name.charAt(0).toUpperCase() + name.slice(1)
+          }`
+        )
+        .then((res) => {
+          const existingValues = res.data;
+          if (existingValues.includes(value)) {
+            setFormErrors((prevErrors) => ({
+              ...prevErrors,
+              [name]: `${
+                name.charAt(0).toUpperCase() + name.slice(1)
+              } already exists.`,
+            }));
+          } else {
+            setFormErrors((prevErrors) => ({
+              ...prevErrors,
+              [name]: "", // Clearing any previous error
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error(`Error fetching existing ${name}:`, error);
+        });
+    }
   };
 
   const validateForm = (values) => {
@@ -95,11 +132,24 @@ const Register = () => {
 
   return (
     <div>
-      
       <div className="Register-Main">
-      <h2 className="" style={{ marginLeft:"-200px",fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}><strong> In-Win: ONiE Soft</strong><br></br> <strong style={{marginLeft:"-100px"}}>Wealth Management System</strong></h2>
+        <h2
+          className=""
+          style={{
+            marginLeft: "-200px",
+            fontWeight: 700,
+            fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+            color: "white",
+          }}
+        >
+          <strong> In-Win: ONiE Soft</strong>
+          <br></br>{" "}
+          <strong style={{ marginLeft: "-100px" }}>
+            Wealth Management System
+          </strong>
+        </h2>
         {!otpModalOpen && (
-          <div className="register" style={{marginLeft:"40px"}}>
+          <div className="register" style={{ marginLeft: "40px" }}>
             <form>
               <h2
                 className="text-center mt-1"

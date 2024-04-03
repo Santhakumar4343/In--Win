@@ -327,8 +327,6 @@ public class UserServiceImpl implements UserService {
 	    return null; 
 	}
 	
-	
-
 	public String verifyOtpForForgotPassword(String enteredOtp) {
 	    try {
 	        // Iterate over all users in temporary storage
@@ -336,8 +334,7 @@ public class UserServiceImpl implements UserService {
 	            String storedOtp = entry.getValue();
 	            // Compare the entered OTP with the stored OTP
 	            if (storedOtp.equals(enteredOtp)) {
-	                // If OTP matches, remove it from the cache
-	             
+	               
 	                // OTP verification successful, return the OTP
 	                return storedOtp;
 	            }

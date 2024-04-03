@@ -2,6 +2,7 @@ package com.os.inwin.entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,16 +16,20 @@ public class User {
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private long id;
-
+	    @Column(unique = true)
 	    private String userName;
+	    @Column(unique = true)
 	    private String email;
 	    private String password;
+	    @Column(unique = true)
 	    private String mobileNumber;
 	    private String gender;
 	    private String fatherName;
 	    private LocalDate dob;
 	    private String bloodGroup;
+	    @Column(unique = true)
 	    private String panNumber;
+	    @Column(unique = true)
 	    private String aadhar;
 	    private String voterId;
 	    private String drivingLicense;

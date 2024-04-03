@@ -43,37 +43,50 @@ const Login = ({ }) => {
 
   const loginHandler = (e) => {
     e.preventDefault();
+    setIsSubmit(true);
+    
+    // Validate form inputs
     setFormErrors(validateForm(user));
+  
     if (!captchaVerified) {
       alert("Please complete the captcha verification.");
       return;
     }
-    setIsSubmit(true);
+  
     if (Object.keys(formErrors).length === 0) {
       axios
         .post(`${BASE_URl}/api/users/login?userName=${user.userName}&password=${user.password}`)
         .then(async (res) => {
           if (res && res.status === 200) {
             const userData = res.data;
-
             const userUsername = userData.userName;
             navigate("/userDashBoard", { state: { userData, userName: userUsername } });
-            console.log("fgjifdgjidfgjdflkgjdfgklfg", userUsername);
           }
         })
         .catch((error) => {
-          if (error.response && error.response.status === 401) {
-            setFormErrors({ password: "Incorrect password" });
-          } else if (error.response && error.response.status === 404) {
-            setFormErrors({ userName: "User name not found" });
-          } else {
-            console.error("Login error:", error);
-            setFormErrors({ userName: "Login failed" });
+          if (error.response) {
+            if (error.response.status === 401) {
+              setFormErrors({ password: "Incorrect password" });
+            }
+            else if (error.response.status === 400) {
+              setFormErrors({ general: "Invalid credentials" });
+            }
+             else if (error.response.status === 404) {
+              setFormErrors({ userName: "Username not found" });
+              setUserDetails({
+                userName:"",
+                password:""
+              });
+            } else {
+              console.error("Login error:", error);
+              setFormErrors({ general: "Login failed" });
+            }
           }
         });
-
     }
   };
+  
+  
 
 
   return (
@@ -90,7 +103,7 @@ const Login = ({ }) => {
             {showPassword ? <Visibility /> : <VisibilityOff />}
           </div>
         </div>
-        <p className="error">{formErrors.password}</p>
+        <p className="error">{formErrors.password}</p> 
         <ReCAPTCHA className="capcha" sitekey="6Lc_2pkpAAAAAJOgqj9SENH88SfnVAQ7xR6WePoy" onChange={() => setCaptchaVerified(true)} />
         <button className="button_common" onClick={loginHandler}>Login</button>
       </form>
