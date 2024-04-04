@@ -24,7 +24,7 @@ const Register = () => {
   });
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [otp, setOtp] = useState("");
-  const [role, setRole] = useState("User");
+ 
 
   // const changeHandler = (e) => {
   //   const { name, value } = e.target;
@@ -34,41 +34,81 @@ const Register = () => {
   //   });
   // };
 
-  const changeHandler = (e) => {
+  const changeHandler = async (e) => {
     const { name, value } = e.target;
-    setUserDetails({
-      ...user,
+    setUserDetails((prevUser) => ({
+      ...prevUser,
       [name]: value,
-    });
+    }));
 
-    // Check if the field being changed is username, email, or mobile number
-    if (name === "userName" || name === "email" || name === "mobileNumber") {
-      axios
-        .get(
-          `${BASE_URl}/api/users/all${
-            name.charAt(0).toUpperCase() + name.slice(1)
-          }`
-        )
-        .then((res) => {
-          const existingValues = res.data;
-          if (existingValues.includes(value)) {
-            setFormErrors((prevErrors) => ({
-              ...prevErrors,
-              [name]: `${
-                name.charAt(0).toUpperCase() + name.slice(1)
-              } already exists.`,
-            }));
-          } else {
-            setFormErrors((prevErrors) => ({
-              ...prevErrors,
-              [name]: "", // Clearing any previous error
-            }));
+    // Validate input fields
+    const newErrors = { ...formErrors };
+
+    switch (name) {
+      case "userName":
+        // Synchronous validation
+        newErrors.userName =
+          value.length < 3 ? "Username must be 3 characters" : "";
+
+        // Asynchronous validation
+        try {
+          const response = await axios.get(
+            `${BASE_URl}/api/users/allUsernames`
+          );
+          if (response.data.includes(value)) {
+            newErrors.userName = "Username already exists";
           }
-        })
-        .catch((error) => {
-          console.error(`Error fetching existing ${name}:`, error);
-        });
+        } catch (error) {
+          console.error("Error fetching usernames:", error);
+          newErrors.userName = "Error fetching usernames";
+        }
+        break;
+
+      case "email":
+        // Synchronous validation
+        newErrors.email = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? "Invalid email format"
+          : "";
+
+        // Asynchronous validation
+        try {
+          const response = await axios.get(`${BASE_URl}/api/users/allEmails`);
+          if (response.data.includes(value)) {
+            newErrors.email = "Email already exists";
+          }
+        } catch (error) {
+          console.error("Error fetching emails:", error);
+          newErrors.email = "Error fetching emails";
+        }
+        break;
+
+      case "mobileNumber":
+        // Synchronous validation
+        newErrors.mobileNumber = value.trim() === "" ? "" : !/^[6-9]\d{9}$/.test(value)
+        ? "Invalid mobile number"
+        : "";
+      
+
+        // Asynchronous validation
+        try {
+          const response = await axios.get(
+            `${BASE_URl}/api/users/getAllMobileNumber`
+          );
+          if (response.data.includes(value)) {
+            newErrors.mobileNumber = "Mobile number already exists";
+          }
+        } catch (error) {
+          console.error("Error fetching mobile numbers:", error);
+          newErrors.mobileNumber = "Error fetching mobile numbers";
+        }
+        break;
+
+      default:
+        break;
     }
+
+    // Update the form errors state
+    setFormErrors(newErrors);
   };
 
   const validateForm = (values) => {
@@ -101,11 +141,22 @@ const Register = () => {
     return error;
   };
 
-  const signupHandler = (e) => {
+  const signupHandler = async (e) => {
     e.preventDefault();
-    const errors = validateForm(user);
-    setFormErrors(errors);
-    if (Object.keys(errors).length === 0) {
+  
+    // Trigger changeHandler manually for each input field to perform validations
+    await changeHandler({ target: { name: "userName", value: user.userName } });
+    await changeHandler({ target: { name: "email", value: user.email } });
+    await changeHandler({ target: { name: "mobileNumber", value: user.mobileNumber } });
+  
+    // Check if required fields are empty
+    if (!user.userName || !user.email || !user.mobileNumber) {
+  alert("Please fill in all required fields.");
+      return;
+    }
+  
+    // If there are no errors, proceed with API call
+    if (!formErrors.userName && !formErrors.email && !formErrors.mobileNumber) {
       axios
         .post(`${BASE_URl}/api/users/send-otp`, user)
         .then((res) => {
@@ -116,6 +167,7 @@ const Register = () => {
         });
     }
   };
+  
 
   const verifyOtp = () => {
     axios
@@ -159,7 +211,7 @@ const Register = () => {
                   color: "black",
                 }}
               >
-                Create your account
+                Sign-Up
               </h2>
               <input
                 type="text"
@@ -168,6 +220,7 @@ const Register = () => {
                 placeholder="User Name"
                 onChange={changeHandler}
                 value={user.userName}
+                required
               />
               <p className="error">{formErrors.userName}</p>
               <input
@@ -177,6 +230,7 @@ const Register = () => {
                 placeholder="Email"
                 onChange={changeHandler}
                 value={user.email}
+                required
               />
               <p className="error">{formErrors.email}</p>
 
@@ -188,6 +242,7 @@ const Register = () => {
                   placeholder="Password"
                   onChange={changeHandler}
                   value={user.password}
+                  required="true"
                 />
                 <div
                   className="password-toggle-icon"
@@ -204,6 +259,7 @@ const Register = () => {
                 placeholder="Mobile Number"
                 onChange={changeHandler}
                 value={user.mobileNumber}
+                required
               />
               <p className="error">{formErrors.mobileNumber}</p>
               <button className="button_common" onClick={signupHandler}>
@@ -214,7 +270,7 @@ const Register = () => {
           </div>
         )}
         {otpModalOpen && (
-          <div className="otp-modal">
+          <div className="otp-modal" style={{marginLeft:"40px"}}>
             <h1>Enter OTP</h1>
             <input
               className="otp-input"

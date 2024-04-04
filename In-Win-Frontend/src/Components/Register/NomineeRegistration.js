@@ -20,20 +20,113 @@ const Register = () => {
     email: "",
     password: "",
     mobileNumber: "",
-    userType:"Nomine",
-    owner:""
+    userType: "Nomine",
+    owner: "",
   });
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [otp, setOtp] = useState("");
   const [role, setRole] = useState("User");
 
-  const changeHandler = (e) => {
+  const changeHandler = async (e) => {
     const { name, value } = e.target;
     setUserDetails({
       ...user,
       [name]: value,
     });
+  
+    // Validate input fields
+    const newErrors = { ...formErrors };
+  
+    switch (name) {
+      case "userName":
+        // Synchronous validation
+        newErrors.userName =
+          value.length < 3 ? "Username must be 3 characters" : "";
+  
+        // Asynchronous validation
+        try {
+          const response = await axios.get(
+            `${BASE_URl}/api/nominees/allUsernames`
+          );
+          if (response.data.includes(value)) {
+            newErrors.userName = "Username already exists";
+          }
+        } catch (error) {
+          console.error("Error fetching usernames:", error);
+          newErrors.userName = "Error fetching usernames";
+        }
+        break;
+  
+      case "owner":
+        // Synchronous validation
+        newErrors.owner =
+          value.length < 3 ? "Enter a valid owner name" : "";
+  
+        // Asynchronous validation
+        try {
+          const response = await axios.get(
+            `${BASE_URl}/api/nominees/getAllOwners`
+          );
+          if (!response.data.includes(value)) {
+            newErrors.owner = "Owner not found";
+          }
+        } catch (error) {
+          console.error("Error fetching owner names:", error);
+          newErrors.owner = "Error fetching owner names";
+        }
+        break;
+  
+      case "email":
+        // Synchronous validation
+        newErrors.email = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? "Invalid email format"
+          : "";
+  
+        // Asynchronous validation
+        try {
+          const response = await axios.get(
+            `${BASE_URl}/api/nominees/allEmails`
+          );
+          if (response.data.includes(value)) {
+            newErrors.email = "Email already exists";
+          }
+        } catch (error) {
+          console.error("Error fetching emails:", error);
+          newErrors.email = "Error fetching emails";
+        }
+        break;
+  
+      case "mobileNumber":
+        // Synchronous validation
+        newErrors.mobileNumber =
+          value.trim() === ""
+            ? ""
+            : !/^[6-9]\d{9}$/.test(value)
+            ? "Invalid mobile number"
+            : "";
+  
+        // Asynchronous validation
+        try {
+          const response = await axios.get(
+            `${BASE_URl}/api/nominees/getAllMobileNumber`
+          );
+          if (response.data.includes(value)) {
+            newErrors.mobileNumber = "Mobile number already exists";
+          }
+        } catch (error) {
+          console.error("Error fetching mobile numbers:", error);
+          newErrors.mobileNumber = "Error fetching mobile numbers";
+        }
+        break;
+  
+      default:
+        break;
+    }
+  
+    // Update the form errors state
+    setFormErrors(newErrors);
   };
+  
 
   const validateForm = (values) => {
     const error = {};
@@ -43,7 +136,7 @@ const Register = () => {
     if (!values.userName) {
       error.userName = "User Name is required";
     } else if (values.userName.length < 3) {
-      error.userName = "enter a valid user name"
+      error.userName = "enter a valid user name";
     }
     if (!values.email) {
       error.email = "Email is required";
@@ -65,13 +158,30 @@ const Register = () => {
     return error;
   };
 
-  const signupHandler = (e) => {
+  const signupHandler = async (e) => {
     e.preventDefault();
-    const errors = validateForm(user);
-    setFormErrors(errors);
-    if (Object.keys(errors).length === 0) {
+    await changeHandler({ target: { name: "userName", value: user.userName } });
+    await changeHandler({ target: { name: "email", value: user.email } });
+    await changeHandler({ target: { name: "owner", value: user.owner } });
+    await changeHandler({
+      target: { name: "mobileNumber", value: user.mobileNumber },
+    });
+
+    // Check if required fields are empty
+    if (!user.userName || !user.email || !user.mobileNumber || !user.owner) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    // If there are no errors, proceed with API call
+    if (
+      !formErrors.userName &&
+      !formErrors.email &&
+      !formErrors.mobileNumber &&
+      !formErrors.owner
+    ) {
       axios
-        .post(`${BASE_URl}/api/nominees/send-otp`, user)
+        .post(`${BASE_URl}/api/users/send-otp`, user)
         .then((res) => {
           setOtpModalOpen(true);
         })
@@ -94,12 +204,8 @@ const Register = () => {
       });
   };
 
-
   return (
-
-    
     <div>
-      
       {/* <div className="d-flex justify-content-end" style={{marginRight:"50px"}}>
         <Select
           variant="outlined"
@@ -115,11 +221,25 @@ const Register = () => {
 
       </div> */}
       <div className="Register-Main">
-      <h2 className="" style={{ marginLeft:"-200px",fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}><strong> In-Win: ONiE Soft</strong><br></br> <strong style={{marginLeft:"-100px"}}>Wealth Management System</strong></h2>
+        <h2
+          className=""
+          style={{
+            marginLeft: "-200px",
+            fontWeight: 700,
+            fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+            color: "white",
+          }}
+        >
+          <strong> In-Win: ONiE Soft</strong>
+          <br></br>{" "}
+          <strong style={{ marginLeft: "-100px" }}>
+            Wealth Management System
+          </strong>
+        </h2>
         {!otpModalOpen && (
-          <div className="register" style={{marginLeft:"40px"}}>
+          <div className="register" style={{ marginLeft: "40px" }}>
             <form>
-            <h2
+              <h2
                 className="text-center mt-1"
                 style={{
                   fontWeight: 700,
@@ -176,11 +296,12 @@ const Register = () => {
               <input
                 type="text"
                 name="owner"
-                id="mobileNumber"
+                id="owner"
                 placeholder="Owner Name"
                 onChange={changeHandler}
                 value={user.owner}
               />
+              <p className="error">{user.owner && formErrors.owner}</p> 
               <button className="button_common" onClick={signupHandler}>
                 Register
               </button>
@@ -189,7 +310,7 @@ const Register = () => {
           </div>
         )}
         {otpModalOpen && (
-          <div className="otp-modal">
+          <div className="otp-modal" style={{ marginLeft: "40px" }}>
             <h1>Enter OTP</h1>
             <input
               className="otp-input"
@@ -198,11 +319,13 @@ const Register = () => {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
             />
-            <button className="otp-button" onClick={verifyOtp}>Verify OTP</button>
+            <button className="otp-button" onClick={verifyOtp}>
+              Verify OTP
+            </button>
           </div>
         )}
       </div>
-      </div>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { BASE_URl } from "../API/Api";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SummaryImage from "../../assets/Summary_1.jpg";
+
 const ForgotPasswordForNominee = () => {
   const navigate = useNavigate();
 
@@ -15,7 +16,8 @@ const ForgotPasswordForNominee = () => {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
- 
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -31,30 +33,54 @@ const ForgotPasswordForNominee = () => {
     }
     return error;
   };
+
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
-  const [otpModalOpen, setOtpModalOpen] = useState(false);
-  const sendOtp = () => {
+
+  const sendOtp = async () => {
     const emailErrors = {};
+
+    if (!email) {
+      emailErrors.email = "Email is required";
+      setErrors(emailErrors);
+      return;
+    }
+
     if (!validateEmail(email)) {
       emailErrors.email = "Invalid email format";
       setErrors(emailErrors);
       return;
     }
-    const formData = new FormData();
-    formData.append("email", email);
-    axios
-      .post(`${BASE_URl}/api/nominees/update-password`, formData)
-      .then((res) => {
-        sessionStorage.setItem("verifiedEmail", email);
-        setStep(2);
-      })
-      .catch((error) => {
-        alert("Invalid Email! Please try again.");
-      });
+
+    try {
+      const response = await axios.get(`${BASE_URl}/api/nominees/allEmails`);
+      if (!response.data.includes(email)) {
+        emailErrors.email = "Email not found";
+        setErrors(emailErrors);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("email", email);
+
+      axios
+        .post(`${BASE_URl}/api/nominees/update-password`, formData)
+        .then((res) => {
+          sessionStorage.setItem("verifiedEmail", email);
+          setStep(2);
+        })
+        .catch((error) => {
+          alert("Invalid Email! Please try again.");
+        });
+    } catch (error) {
+      console.error("Error fetching emails:", error);
+      emailErrors.email = "Error fetching emails";
+      setErrors(emailErrors);
+    }
   };
+
   const verifyOtp = () => {
     axios
       .post(`${BASE_URl}/api/nominees/verify-otp/forgotpassword?otp=${otp}`)
@@ -69,12 +95,12 @@ const ForgotPasswordForNominee = () => {
   };
 
   const savePassword = () => {
-
     const passwordErrors = validatePassword(newPassword);
     if (Object.keys(passwordErrors).length > 0) {
       setErrors(passwordErrors);
       return;
     }
+
     const formData = new FormData();
     formData.append("newPassword", newPassword);
 
@@ -96,7 +122,7 @@ const ForgotPasswordForNominee = () => {
 
   return (
     <div>
-      <div className="Register-Main-forgotPassword"  style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: 'cover' }}>
+      <div className="Register-Main-forgotPassword" style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: 'cover' }}>
         <div className="register">
           {step === 1 && (
             <div>
@@ -110,13 +136,13 @@ const ForgotPasswordForNominee = () => {
               />
               {errors.email && <p className="text-danger">{errors.email}</p>}
               <div className="d-flex">
-              <button className="button_common_forgot" onClick={sendOtp}>
-                Send OTP
-              </button>
-              <button className="button_common_forgot" onClick={() => navigate("/")}>
-  Cancel
-</button>
-</div>
+                <button className="button_common_forgot" onClick={sendOtp}>
+                  Send OTP
+                </button>
+                <button className="button_common_forgot" onClick={() => navigate("/")}>
+                  Cancel
+                </button>
+              </div>
             </div>
           )}
 
@@ -147,7 +173,7 @@ const ForgotPasswordForNominee = () => {
                   placeholder="Enter new password"
                   onChange={(e) => setNewPassword(e.target.value)}
                   value={newPassword}
-                  style={{width:"320px",height:"50px",borderRadius:"10px"}}
+                  style={{ width: "320px", height: "50px", borderRadius: "10px" }}
                 />
                 <div
                   className="password-toggle-icon"
@@ -156,7 +182,7 @@ const ForgotPasswordForNominee = () => {
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </div>
               </div>
-              {errors.password && <p style={{color:"red"}}>{errors.password}</p>}
+              {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
               <button className="button_common" onClick={savePassword}>
                 Save Password
               </button>

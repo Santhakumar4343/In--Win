@@ -229,8 +229,26 @@ public  ResponseEntity<List<Nominee>> getNomineeForOwner(@PathVariable String ow
 	
 	
 	
-	
-	
+
+	    @GetMapping("/allUsernames")
+	    public List<String> getAllUsernames() {
+	        return nomineeRepository.findAllUserNames();
+	    }
+
+	    @GetMapping("/allEmails")
+	    public List<String> getAllEmails() {
+	        return nomineeRepository.findAllEmails();
+	    }
+
+	   
+	    @GetMapping("/getAllMobileNumber")
+	    public List<String> getAllMobileNumbers() {
+	        return nomineeRepository.findAllMobileNumber();
+	    }
+	    @GetMapping("/getAllOwners")
+	    public List<String> getAllOwners() {
+	        return nomineeRepository.findAllOwner();
+	    }
 	
 	
 	

@@ -18,6 +18,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.os.inwin.dto.OtpDto;
 import com.os.inwin.entity.User;
 import com.os.inwin.repository.UserRepository;
 import com.os.inwin.service.UserService;
@@ -286,8 +287,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
-	
-	private final Map<String, String> otpCacheforgot = new ConcurrentHashMap<>();
+private final Map<String, String> otpCacheforgot = new ConcurrentHashMap<>();
 	
 	public String generateOtpAndSendEmailForUser(String email) {
 		try {
@@ -296,7 +296,9 @@ public class UserServiceImpl implements UserService {
 
 			// Save the OTP to the cache
 			otpCacheforgot.put(email,otp);
-
+            OtpDto otpDto=new OtpDto();
+            otpDto.setEmail(email);
+            otpDto.setOtp(otp);
 			// Log the generated OTP for debugging (you can remove this in production)
 			System.out.println("Generated OTP for user " + email + ": " + otp);
 
@@ -332,12 +334,12 @@ public class UserServiceImpl implements UserService {
 	        // Iterate over all users in temporary storage
 	        for (Map.Entry<String, String> entry : otpCacheforgot.entrySet()) {
 	            String storedOtp = entry.getValue();
+	            String storedEmail=entry.getKey();
 	            // Compare the entered OTP with the stored OTP
 	            if (storedOtp.equals(enteredOtp)) {
-	               
-	                // OTP verification successful, return the OTP
-	                return storedOtp;
-	            }
+	              System.out.println("Otp verifed successfullly");
+	                return storedEmail;
+	            } 
 	        }
 	        // If no matching OTP is found in temporary storage, return null
 	        return null;
@@ -361,5 +363,8 @@ public class UserServiceImpl implements UserService {
 	        // If no matching OTP is found in temporary storage, return null
 	        return null;
 	    }
+	 
+	 
+	 
 
 }
