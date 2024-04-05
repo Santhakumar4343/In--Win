@@ -64,11 +64,9 @@ const ForgotPassword = () => {
 
       const formData = new FormData();
       formData.append("email", email);
-
       axios
         .post(`${BASE_URl}/api/users/update-password`, formData)
         .then((res) => {
-          sessionStorage.setItem("verifiedEmail", email);
           setStep(2);
         })
         .catch((error) => {
@@ -82,43 +80,41 @@ const ForgotPassword = () => {
   };
 
   const verifyOtp = () => {
+    const formData = new FormData();
+    formData.append("otp", otp);
+    
     axios
-      .post(`${BASE_URl}/api/users/verify-otp/forgotpassword?otp=${otp}`)
+      .post(`${BASE_URl}/api/users/verify-otp/forgotpassword`, formData)
       .then((res) => {
-        sessionStorage.setItem("verifiedEmail", email);
         setStep(3);
       })
       .catch((error) => {
         console.error("Error verifying OTP:", error);
         alert("Invalid OTP! Please try again.");
       });
-  };
+};
 
-  const savePassword = () => {
-    const passwordErrors = validatePassword(newPassword);
-    if (Object.keys(passwordErrors).length > 0) {
-      setErrors(passwordErrors);
-      return;
-    }
 
-    const formData = new FormData();
-    formData.append("newPassword", newPassword);
+const savePassword = () => {
+  const passwordErrors = validatePassword(newPassword);
+  if (Object.keys(passwordErrors).length > 0) {
+    setErrors(passwordErrors);
+    return;
+  }
+  
+  const formData = new FormData();
+  formData.append("newPassword", newPassword);
+  
+  axios
+    .post(`${BASE_URl}/api/users/set-new-password`, formData)
+    .then((res) => {
+      // Handle response if needed
+    })
+    .catch((error) => {
+      // Handle error if needed
+    });
+};
 
-    const emailFromSession = sessionStorage.getItem("verifiedEmail");
-    if (!emailFromSession) {
-      console.error("Email not verified or session expired");
-      return;
-    }
-
-    axios
-      .post(`${BASE_URl}/api/users/set-new-password`, formData)
-      .then((res) => {
-        sessionStorage.removeItem("verifiedEmail");
-      })
-      .catch((error) => {
-        // Handle error
-      });
-  };
 
   return (
     <div>
