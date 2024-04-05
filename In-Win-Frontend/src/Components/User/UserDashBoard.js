@@ -31,7 +31,7 @@ import MonthlyExpenditure from "../MonthlyExpenditure/MonthlyExpenditure.js"
 import HouseIcon from '@mui/icons-material/House';
 import Metal from "../Gold/Metal.js";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SummaryImage from "../../assets/Summary_1.jpg";
+import SummaryImage from "../../assets/Summary0.png";
 function UserDashboard() {
   const Navigate = useNavigate();
 const location=useLocation();
@@ -76,7 +76,7 @@ const userData=location.state?.userData.userName;
       case "banka/cs":
         return <BankACs />;
       case "summary":
-        return <Summary  style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: 'cover' ,width:"500px"}}/>;
+        return <Summary  />;
       case "profile":
         return <Profile />;
         case "monthlyExpenditure":
@@ -119,7 +119,7 @@ const userData=location.state?.userData.userName;
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container" >
 
       <div className="nav-links container-fluid" >
         <ul className="list-unstyled">
@@ -201,8 +201,11 @@ const userData=location.state?.userData.userName;
           </li>
         </ul>
       </div>
-      <div className="main-content" style={{ padding: "20px" }}>
-      <h4 className="text-center" style={{ fontWeight: 1000, fontSize:"35px",fontFamily: "Segoe UI, sans-serif", color: "black" }}>
+     
+{/* style={{ padding: "20px" }} */}
+<div className="main-content" style={{ backgroundImage: `url(${SummaryImage})`, backgroundSize: "cover", backgroundPosition: "center",  }}>
+
+      <h4 className="text-center" style={{ fontWeight: 1000, fontSize:"35px",fontFamily: "Segoe UI, sans-serif", color: "white" }}>
           {renderHeaderContent()}
         </h4>
 
@@ -213,8 +216,9 @@ const userData=location.state?.userData.userName;
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={currency}
-            style={{ width: 100, height: 40, marginLeft: 15 }}
-            className="border border-dark"
+            style={{ width: 100, height: 40, marginLeft: 15 ,color:"white"}}
+            className="border border-light"
+           
             onChange={(e) => setCurrency(e.target.value)}
           >
              <MenuItem value={"AED"}>AED</MenuItem>
@@ -225,7 +229,9 @@ const userData=location.state?.userData.userName;
             <MenuItem value={"USD"}>USD</MenuItem>
           </Select>
         </div>
-        {renderContent()}
+        <div className="content-container" style={{ overflowY: "auto" }}>
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

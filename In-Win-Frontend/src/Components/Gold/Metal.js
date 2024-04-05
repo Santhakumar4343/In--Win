@@ -27,7 +27,8 @@ const Metal = ({ }) => {
           variant="outlined"
           labelId="demo-simple-select-label"
           value={metal}
-          style={{ width: 100, height: 40, color: "black", borderColor: "black" }}
+          className="border border-light"
+          style={{ width: 100, height: 40, color: "white"}}
           onChange={handleMetalChange}
         >
           <MenuItem value={"gold"}>Gold</MenuItem>

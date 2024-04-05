@@ -6,10 +6,11 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { BASE_URl } from "../API/Api";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SummaryImage from "../../assets/Summary_1.jpg";
+import Swal from 'sweetalert2';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -54,6 +55,7 @@ const ForgotPassword = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await axios.get(`${BASE_URl}/api/users/allEmails`);
       if (!response.data.includes(email)) {
@@ -64,14 +66,9 @@ const ForgotPassword = () => {
 
       const formData = new FormData();
       formData.append("email", email);
-      axios
-        .post(`${BASE_URl}/api/users/update-password`, formData)
-        .then((res) => {
-          setStep(2);
-        })
-        .catch((error) => {
-          alert("Invalid Email! Please try again.");
-        });
+      const res = await axios.post(`${BASE_URl}/api/users/update-password`, formData);
+      setLoading(false);
+      setStep(2);
     } catch (error) {
       console.error("Error fetching emails:", error);
       emailErrors.email = "Error fetching emails";
@@ -79,42 +76,58 @@ const ForgotPassword = () => {
     }
   };
 
-  const verifyOtp = () => {
+  const verifyOtp = async () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("otp", otp);
     
-    axios
-      .post(`${BASE_URl}/api/users/verify-otp/forgotpassword`, formData)
-      .then((res) => {
-        setStep(3);
-      })
-      .catch((error) => {
-        console.error("Error verifying OTP:", error);
-        alert("Invalid OTP! Please try again.");
+    try {
+      const res = await axios.post(`${BASE_URl}/api/users/verify-otp/forgotpassword`, formData);
+      setLoading(false);
+      setStep(3);
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Invalid OTP! Please try again.',
       });
-};
+      setLoading(false);
+    }
+  };
 
-
-const savePassword = () => {
-  const passwordErrors = validatePassword(newPassword);
-  if (Object.keys(passwordErrors).length > 0) {
-    setErrors(passwordErrors);
-    return;
-  }
-  
-  const formData = new FormData();
-  formData.append("newPassword", newPassword);
-  
-  axios
-    .post(`${BASE_URl}/api/users/set-new-password`, formData)
-    .then((res) => {
-      // Handle response if needed
-    })
-    .catch((error) => {
-      // Handle error if needed
-    });
-};
-
+  const savePassword = async () => {
+    const passwordErrors = validatePassword(newPassword);
+    if (Object.keys(passwordErrors).length > 0) {
+      setErrors(passwordErrors);
+      return;
+    }
+    
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("newPassword", newPassword);
+    
+    try {
+      const res = await axios.post(`${BASE_URl}/api/users/set-new-password`, formData);
+      navigate("/");
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Password updated successfully!',
+      });
+      setLoading(false);
+      // Handle any additional actions if needed
+    } catch (error) {
+      console.error("Error updating password:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to update password. Please try again later.',
+      });
+      setLoading(false);
+      // Handle any additional error handling if needed
+    }
+  };
 
   return (
     <div>
@@ -132,8 +145,8 @@ const savePassword = () => {
               />
               {errors.email && <p className="text-danger">{errors.email}</p>}
               <div className="d-flex">
-                <button className="button_common_forgot" onClick={sendOtp}>
-                  Send OTP
+                <button className="button_common" onClick={sendOtp} disabled={loading}>
+                  {loading ? "Sending..." : "Send OTP"}
                 </button>
                 <button className="button_common_forgot" onClick={() => navigate("/")}>
                   Cancel
@@ -152,8 +165,8 @@ const savePassword = () => {
                 onChange={(e) => setOtp(e.target.value)}
                 style={{ width: "320px", height: "50px", borderRadius: "10px" }}
               />
-              <button className="button_common" onClick={verifyOtp}>
-                Verify OTP
+              <button className="button_common" onClick={verifyOtp} disabled={loading}>
+                {loading ? "Verifying OTP..." : "Verify OTP"}
               </button>
             </div>
           )}
@@ -179,8 +192,8 @@ const savePassword = () => {
                 </div>
               </div>
               {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
-              <button className="button_common" onClick={savePassword}>
-                Save Password
+              <button className="button_common" onClick={savePassword} disabled={loading}>
+                {loading ? "Saving Password..." : "Save Password"}
               </button>
             </div>
           )}

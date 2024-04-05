@@ -89,7 +89,7 @@ const Login = ({ }) => {
                 color: "black",
               }}
             >
-              Login
+            Sign-In
             </h2>
             <input
               type="text"
@@ -120,10 +120,10 @@ const Login = ({ }) => {
               onChange={() => setCaptchaVerified(true)}
             />
             <button className="button_common" onClick={loginHandler}>
-              Login
+              Sign-In
             </button>
           </form>
-          <NavLink to="/register">Not yet registered? Register Now</NavLink><br></br>
+          <NavLink to="/register">Not yet Sign-Up? Sign-Up</NavLink><br></br>
           <NavLink to="/forgot-password-nominee">Forgot Password </NavLink>
         </div>
       </div>

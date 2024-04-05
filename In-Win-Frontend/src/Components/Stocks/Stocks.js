@@ -28,6 +28,8 @@ function Stocks() {
     return {
         backgroundImage: `url(${stockImages[index % stockImages.length]})`,
         backgroundSize: 'cover',
+        //  
+      
       
     };
 };
@@ -188,7 +190,8 @@ const renderPrice = (price) => {
       <div className="row row-cols-1 row-cols-md-3 g-4 mt-2">
         {stocks.map((stock, index) => (
           <div className="col-md-4 mb-3" key={stock.id}>
-            <div className="card h-100 d-flex flex-column border border-dark" style={backgroundImageStyle(index)}>
+           <div className="card h-100 d-flex flex-column border border-dark" style={ backgroundImageStyle(index)}>
+
               <div className="card-body">
                 <h5 className="card-title text-center" style={{color:"white"}}>{stock.name}</h5>
                 <p style={{color:"white"}}>Symbol:<strong> {stock.symbol}</strong></p>

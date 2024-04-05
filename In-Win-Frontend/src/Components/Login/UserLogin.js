@@ -7,7 +7,7 @@ import { BASE_URl } from "../API/Api";
 import { CommentSharp } from "@mui/icons-material";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-const Login = ({ }) => {
+const Login = ({}) => {
   const navigate = useNavigate();
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -44,38 +44,40 @@ const Login = ({ }) => {
   const loginHandler = (e) => {
     e.preventDefault();
     setIsSubmit(true);
-    
+
     // Validate form inputs
     setFormErrors(validateForm(user));
-  
+
     if (!captchaVerified) {
       alert("Please complete the captcha verification.");
       return;
     }
-  
+
     if (Object.keys(formErrors).length === 0) {
       axios
-        .post(`${BASE_URl}/api/users/login?userName=${user.userName}&password=${user.password}`)
+        .post(
+          `${BASE_URl}/api/users/login?userName=${user.userName}&password=${user.password}`
+        )
         .then(async (res) => {
           if (res && res.status === 200) {
             const userData = res.data;
             const userUsername = userData.userName;
-            navigate("/userDashBoard", { state: { userData, userName: userUsername } });
+            navigate("/userDashBoard", {
+              state: { userData, userName: userUsername },
+            });
           }
         })
         .catch((error) => {
           if (error.response) {
             if (error.response.status === 401) {
               setFormErrors({ password: "Incorrect password" });
-            }
-            else if (error.response.status === 400) {
+            } else if (error.response.status === 400) {
               setFormErrors({ general: "Invalid credentials" });
-            }
-             else if (error.response.status === 404) {
+            } else if (error.response.status === 404) {
               setFormErrors({ userName: "Username not found" });
               setUserDetails({
-                userName:"",
-                password:""
+                userName: "",
+                password: "",
               });
             } else {
               console.error("Login error:", error);
@@ -85,35 +87,77 @@ const Login = ({ }) => {
         });
     }
   };
-  
-  
-
 
   return (
     <div className="Login-Main">
-    <h2 className="" style={{ marginLeft:"-200px",fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "white" }}><strong> In-Win: ONiE Soft</strong><br></br> <strong style={{marginLeft:"-100px"}}>Wealth Management System</strong></h2>
-    <div className="login" style={{marginLeft:"40px"}}>
-      <form>
-        <h2 className="text-center mt-1" style={{ fontWeight: 700, fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif", color: "black" }}>Login</h2>
-        <input type="text" name="userName" id="userName" placeholder="User Name" onChange={changeHandler} value={user.userName} />
-        <p className="error">{formErrors.userName}</p>
-        <div className="password-input">
-          <input type={showPassword ? "text" : "password"} name="password" id="password" placeholder="Password" onChange={changeHandler} value={user.password} />
-          <div className="password-toggle-icon" onClick={togglePasswordVisibility}>
-            {showPassword ? <Visibility /> : <VisibilityOff />}
+      <h2
+        className=""
+        style={{
+          marginLeft: "-200px",
+          fontWeight: 700,
+          fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+          color: "white",
+        }}
+      >
+        <strong> In-Win: ONiE Soft</strong>
+        <br></br>{" "}
+        <strong style={{ marginLeft: "-100px" }}>
+          Wealth Management System
+        </strong>
+      </h2>
+      <div className="login" style={{ marginLeft: "40px" }}>
+        <form>
+          <h2
+            className="text-center mt-1"
+            style={{
+              fontWeight: 700,
+              fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+              color: "black",
+            }}
+          >
+            Sign-In
+          </h2>
+          <input
+            type="text"
+            name="userName"
+            id="userName"
+            placeholder="User Name"
+            onChange={changeHandler}
+            value={user.userName}
+          />
+          <p className="error">{formErrors.userName}</p>
+          <div className="password-input">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
+              placeholder="Password"
+              onChange={changeHandler}
+              value={user.password}
+            />
+            <div
+              className="password-toggle-icon"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <Visibility /> : <VisibilityOff />}
+            </div>
           </div>
-        </div>
-        <p className="error">{formErrors.password}</p> 
-        <ReCAPTCHA className="capcha" sitekey="6Lc_2pkpAAAAAJOgqj9SENH88SfnVAQ7xR6WePoy" onChange={() => setCaptchaVerified(true)} />
-        <button className="button_common" onClick={loginHandler}>Login</button>
-      </form>
-      <NavLink to="/register">Not yet registered? Register Now</NavLink><br></br>
-      <NavLink to="/forgot-password">Forgot Password</NavLink>
+          <p className="error">{formErrors.password}</p>
+          <ReCAPTCHA
+            className="capcha"
+            sitekey="6Lc_2pkpAAAAAJOgqj9SENH88SfnVAQ7xR6WePoy"
+            onChange={() => setCaptchaVerified(true)}
+          />
+          <button className="button_common" onClick={loginHandler}>
+            Sign-In
+          </button>
+        </form>
+        <NavLink to="/register">Not yet Sign-Up? Sign-Up Now</NavLink>
+        <br></br>
+        <NavLink to="/forgot-password">Forgot Password</NavLink>
+      </div>
     </div>
-  </div>
-  
   );
 };
 
 export default Login;
- 

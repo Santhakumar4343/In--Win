@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate,Location, useLocation } from "react-router-dom";
-
+import SummaryImage from "../../assets/Summary_1.jpg";
 import { Dropdown } from "react-bootstrap";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import BalanceIcon from '@mui/icons-material/Balance';
@@ -198,8 +198,8 @@ const userData=location.state?.userData.userName;
           </li>
         </ul>
       </div>
-      <div className="main-content" style={{ padding: "20px" }}>
-      <h4 className="text-center" style={{ fontWeight: 1000, fontSize:"35px",fontFamily: "Segoe UI, sans-serif", color: "black" }}>
+      <div className="main-content" style={{ backgroundImage: `url(${SummaryImage})`,backgroundSize: "cover",backgroundPosition:"center" }}>
+      <h4 className="text-center" style={{ fontWeight: 1000, fontSize:"35px",fontFamily: "Segoe UI, sans-serif", color: "white" }}>
           {renderHeaderContent()}
         </h4>
 
@@ -210,8 +210,8 @@ const userData=location.state?.userData.userName;
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={currency}
-            style={{ width: 100, height: 40, marginLeft: 15 }}
-            className="border border-dark"
+            style={{ width: 100, height: 40, marginLeft: 15 ,color:"white"}}
+            className="border border-light"
             onChange={(e) => setCurrency(e.target.value)}
           >
              <MenuItem value={"AED"}>AED</MenuItem>
@@ -222,7 +222,9 @@ const userData=location.state?.userData.userName;
             <MenuItem value={"USD"}>USD</MenuItem>
           </Select>
         </div>
-        {renderContent()}
+        <div className="content-container" style={{ overflowY: "auto" }}>
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

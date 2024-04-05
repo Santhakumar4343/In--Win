@@ -8,6 +8,7 @@ import { MenuItem, Select } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -160,6 +161,7 @@ const Register = () => {
 
   const signupHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     await changeHandler({ target: { name: "userName", value: user.userName } });
     await changeHandler({ target: { name: "email", value: user.email } });
     await changeHandler({ target: { name: "owner", value: user.owner } });
@@ -170,6 +172,7 @@ const Register = () => {
     // Check if required fields are empty
     if (!user.userName || !user.email || !user.mobileNumber || !user.owner) {
       alert("Please fill in all required fields.");
+      setLoading(false);
       return;
     }
 
@@ -199,8 +202,10 @@ const Register = () => {
         navigate("/", { replace: true });
       })
       .catch((error) => {
-        console.error("Error verifying OTP:", error);
-        alert("Invalid OTP! Please try again.");
+        console.error("Error sending OTP:", error);
+      })
+      .finally(() => {
+        setLoading(false); 
       });
   };
 
@@ -247,7 +252,7 @@ const Register = () => {
                   color: "black",
                 }}
               >
-                Create your account
+              Sign-Up
               </h2>
               <input
                 type="text"
@@ -302,11 +307,11 @@ const Register = () => {
                 value={user.owner}
               />
               <p className="error">{user.owner && formErrors.owner}</p> 
-              <button className="button_common" onClick={signupHandler}>
-                Register
+              <button className="button_common" onClick={signupHandler} disabled={loading}>
+                {loading ? "Sign-Up..." : "Sign-Up"}
               </button>
             </form>
-            <NavLink to="/">Already registered? Login</NavLink>
+            <NavLink to="/">Already Sign-Up? Login</NavLink>
           </div>
         )}
         {otpModalOpen && (

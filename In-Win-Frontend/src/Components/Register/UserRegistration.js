@@ -12,6 +12,7 @@ const Register = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -143,7 +144,7 @@ const Register = () => {
 
   const signupHandler = async (e) => {
     e.preventDefault();
-  
+    setLoading(true);
     // Trigger changeHandler manually for each input field to perform validations
     await changeHandler({ target: { name: "userName", value: user.userName } });
     await changeHandler({ target: { name: "email", value: user.email } });
@@ -151,6 +152,7 @@ const Register = () => {
   
     // Check if required fields are empty
     if (!user.userName || !user.email || !user.mobileNumber) {
+      setLoading(false);
   alert("Please fill in all required fields.");
       return;
     }
@@ -164,6 +166,9 @@ const Register = () => {
         })
         .catch((error) => {
           console.error("Error sending OTP:", error);
+        })
+        .finally(() => {
+          setLoading(false); 
         });
     }
   };
@@ -262,11 +267,11 @@ const Register = () => {
                 required
               />
               <p className="error">{formErrors.mobileNumber}</p>
-              <button className="button_common" onClick={signupHandler}>
-                Register
+              <button className="button_common" onClick={signupHandler} disabled={loading}>
+                {loading ? "Loading..." : "Sign-Up"}
               </button>
             </form>
-            <NavLink to="/">Already registered? Login</NavLink>
+            <NavLink to="/">Already Sign-Up? Login</NavLink>
           </div>
         )}
         {otpModalOpen && (
