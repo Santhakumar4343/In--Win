@@ -24,13 +24,13 @@
     "sweetalert2": "^11.10.5",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && ( [ \"$DISABLE_ESLINT\" = \"true\" ] || eslint src )",
-     "eslint": "eslint src",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+ "scripts": {
+  "start": "react-scripts start",
+  "build": "react-scripts build && ( [ \"$DISABLE_ESLINT\" = \"true\" ] || react-scripts build )",
+  "eslint": "eslint src",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
